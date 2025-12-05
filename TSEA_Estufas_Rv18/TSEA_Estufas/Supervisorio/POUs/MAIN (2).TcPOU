@@ -1,0 +1,511 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="MAIN" Id="{e7b626ee-7616-438d-ba06-1ccb984b8d91}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	
+	i: INT;
+	temperatura: REAL;
+	sDB_Operador: STRING;
+	j: INT;
+	
+	start: bool;
+	
+	concatena: BOOL;
+	barTimeSec: DWORD;
+	barTimeArm: DWORD;
+	bardintSec19: DINT;
+	bardintArm19: DINT;
+	bTravaRegressivaS19: BOOL;
+	bTravaRegressivaA19: BOOL;
+	l: INT;
+	readAnalog: REAL;
+	number: int;
+	bTravaRegressivaS20: BOOL;
+	bTravaRegressivaA20: bool;
+	bardintSec20: UDINT;
+	bardintArm20: UDINT;
+	bTravaRegressivaS21: BOOL;
+	bTravaRegressivaA21: BOOL;
+	bardintSec21: UDINT;
+	bardintArm21: UDINT;
+	barTimeSec19: DWORD;
+	barTimeArm19: DWORD;
+	barTimeSec20: DWORD;
+	barTimeArm20: DWORD;
+	barTimeSec21: DWORD;
+	barTimeArm21: DWORD;
+	k: INT;
+	nabas1: INT;
+	nabas2: INT;
+	nabas3: INT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[Chart_Gen();
+registradorLog();
+Rotina019();
+Rotina020();
+Rotina021();
+POU_Persistent();
+
+gvl.somaTempo:= SYSTEMTIME_TO_DT(gvl.fbGetLocalSystemTime.systemTime);
+	
+sDB_Operador:= WSTRING_TO_STRING(VisuElems.CurrentFullUserName);
+
+// CALCULO DAS TEMPERATURAS 019 ---------------------------------------------------------------------------------------
+gvl.zona1atual_019:= (INT_TO_REAL(gvl.AnalogIn_4_20[0]*200)/32767);
+gvl.zona2atual_019:= (INT_TO_REAL(gvl.AnalogIn_4_20[1]*200)/32767);
+gvl.zonaSegAtual_019:= (INT_TO_REAL(gvl.AnalogIn_4_20[2]*200)/32767);
+
+gvl.AnalogOut_0_10[0]:= (gvl_p.zona1setpt_019)*164;
+gvl.AnalogOut_0_10[1]:= (gvl_p.zona2setpt_019)*164;
+gvl.AnalogOut_0_10[2]:= (gvl_p.zonaSegSetpt_019)*164;
+
+// CALCULO DAS TEMPERATURAS 020 ---------------------------------------------------------------------------------------
+gvl.zona1atual_020:= (INT_TO_REAL(gvl.AnalogIn_4_20[3]*200)/32767);
+gvl.zona2atual_020:= (INT_TO_REAL(gvl.AnalogIn_4_20[4]*200)/32767);
+gvl.zonaSegAtual_020:= (INT_TO_REAL(gvl.AnalogIn_4_20[5]*200)/32767);
+
+gvl.AnalogOut_0_10[3]:= (gvl_p.zona1setpt_020)*164;
+gvl.AnalogOut_0_10[4]:= (gvl_p.zona2setpt_020)*164;
+gvl.AnalogOut_0_10[5]:= (gvl_p.zonaSegSetpt_020)*164;
+
+// CALCULO DAS TEMPERATURAS 021 ---------------------------------------------------------------------------------------
+gvl.zona1atual_021:= (INT_TO_REAL(gvl.AnalogIn_4_20[8]*200)/32767);
+gvl.zona2atual_021:= (INT_TO_REAL(gvl.AnalogIn_4_20[6]*200)/32767);
+gvl.zonaSegAtual_021:= (INT_TO_REAL(gvl.AnalogIn_4_20[7]*200)/32767);
+
+gvl.AnalogOut_0_10[8]:= (gvl_p.zona1setpt_021)*164;
+gvl.AnalogOut_0_10[6]:= (gvl_p.zona2setpt_021)*164;
+gvl.AnalogOut_0_10[7]:= (gvl_p.zonaSegSetpt_021)*164;
+
+// VERIFICADO DE PRESENÇA DE REATOR -----------------------------------------------------------------------------------
+
+FOR j:=1 TO 24 BY 1 DO
+	IF gvl_p.aPositionsE019[j].reator THEN
+		nabas1:=nabas1;
+	ELSE
+		nabas1:=nabas1+1;			
+	END_IF	
+	
+	IF nabas1 > 0 THEN
+	gvl_p.bCarrinhoReator1:=FALSE;
+	ELSE
+		gvl_p.bCarrinhoReator1:=TRUE;
+	END_IF
+	
+	IF gvl_p.aPositionsE020[j].reator THEN
+		nabas2:=nabas2;
+	ELSE
+		nabas2:=nabas2+1;			
+	END_IF	
+	
+	IF nabas2 > 0 THEN
+	gvl_p.bCarrinhoReator2:=FALSE;
+	ELSE
+		gvl_p.bCarrinhoReator2:=TRUE;
+	END_IF
+	
+	IF gvl_p.aPositionsE021[j].reator THEN
+		nabas3:=nabas3;
+	ELSE
+		nabas3:=nabas3+1;			
+	END_IF	
+	
+	IF nabas3 > 0 THEN
+	gvl_p.bCarrinhoReator3:=FALSE;
+	ELSE
+		gvl_p.bCarrinhoReator3:=TRUE;
+	END_IF
+END_FOR
+
+nabas1:=0;
+nabas2:=0;
+nabas3:=0;
+
+// CONTAGEM REGRESSIVA DOS TEMPOS DAS ESTUFAS --------------------------------------------------------------------------
+
+IF gvl_p.arrStatusEstufas[0].fimSecagem <> DT#1970-1-1-0:0:0 THEN
+	IF NOT bTravaRegressivaS19 THEN
+		gvl.endSeca19:= gvl_p.arrStatusEstufas[0].fimSecagem - systemtime_to_dt(gvl.fbGetLocalSystemTime.systemTime);
+	END_IF
+	IF NOT bTravaRegressivaA19 THEN
+		gvl.endArm19:= gvl_p.arrStatusEstufas[0].fimArmazenagem - systemtime_to_dt(gvl.fbGetLocalSystemTime.systemTime);
+	END_IF
+barTimeSec19:= TIME_TO_DWORD(gvl.endSeca19);
+barTimeArm19:= TIME_TO_DWORD(gvl.endArm19);
+bardintSec19:= barTimeSec19/1000;
+bardintArm19:= barTimeArm19/1000;
+ELSE
+	main.bardintArm19:= 0;
+	main.bardintSec19:= 0;
+	main.barTimeArm19:= 0;
+	main.barTimeSec19:= 0;
+END_IF
+
+IF gvl_p.arrStatusEstufas[1].fimSecagem <> DT#1970-1-1-0:0:0 THEN
+	IF NOT bTravaRegressivaS20 THEN
+		gvl.endSeca20:= gvl_p.arrStatusEstufas[1].fimSecagem - systemtime_to_dt(gvl.fbGetLocalSystemTime.systemTime);
+	END_IF
+	IF NOT bTravaRegressivaA20 THEN
+		gvl.endArm20:= gvl_p.arrStatusEstufas[1].fimArmazenagem - systemtime_to_dt(gvl.fbGetLocalSystemTime.systemTime);
+	END_IF
+barTimeSec20:= TIME_TO_DWORD(gvl.endSeca20);
+barTimeArm20:= TIME_TO_DWORD(gvl.endArm20);
+bardintSec20:= barTimeSec20/1000;
+bardintArm20:= barTimeArm20/1000;
+ELSE
+	main.bardintArm20:= 0;
+	main.bardintSec20:= 0;
+	main.barTimeArm20:= 0;
+	main.barTimeSec20:= 0;
+END_IF
+
+IF gvl_p.arrStatusEstufas[2].fimSecagem <> DT#1970-1-1-0:0:0 THEN
+	IF NOT bTravaRegressivaS21 THEN
+		gvl.endSeca21:= gvl_p.arrStatusEstufas[2].fimSecagem - systemtime_to_dt(gvl.fbGetLocalSystemTime.systemTime);
+	END_IF
+	IF NOT bTravaRegressivaA21 THEN
+		gvl.endArm21:= gvl_p.arrStatusEstufas[2].fimArmazenagem - systemtime_to_dt(gvl.fbGetLocalSystemTime.systemTime);
+	END_IF
+barTimeSec21:= TIME_TO_DWORD(gvl.endSeca21);
+barTimeArm21:= TIME_TO_DWORD(gvl.endArm21);
+bardintSec21:= barTimeSec21/1000;
+bardintArm21:= barTimeArm21/1000;
+ELSE
+	main.bardintArm21:= 0;
+	main.bardintSec21:= 0;
+	main.barTimeArm21:= 0;
+	main.barTimeSec21:= 0;
+END_IF
+
+IF gvl_p.arrStatusEstufas[0].fimSecagem = systemtime_to_dt(gvl.fbGetLocalSystemTime.systemTime) THEN
+	bTravaRegressivaS19:= TRUE;
+	ELSE
+		bTravaRegressivaS19:= FALSE;
+END_IF
+
+IF gvl_p.arrStatusEstufas[0].fimArmazenagem = systemtime_to_dt(gvl.fbGetLocalSystemTime.systemTime) THEN
+	bTravaRegressivaA19:= TRUE;
+	gvl_p.arrStatusEstufas[0].fimSecagem := DT#1970-1-1-0:0:0;
+	ELSE
+		bTravaRegressivaA19:= FALSE;
+END_IF
+
+IF gvl_p.arrStatusEstufas[1].fimSecagem = systemtime_to_dt(gvl.fbGetLocalSystemTime.systemTime) THEN
+	bTravaRegressivaS20:= TRUE;
+	ELSE
+		bTravaRegressivaS20:= FALSE;
+END_IF
+
+IF gvl_p.arrStatusEstufas[1].fimArmazenagem = systemtime_to_dt(gvl.fbGetLocalSystemTime.systemTime) THEN
+	bTravaRegressivaA20:= TRUE;
+	gvl_p.arrStatusEstufas[1].fimSecagem := DT#1970-1-1-0:0:0;
+	ELSE
+		bTravaRegressivaA20:= FALSE;
+END_IF
+
+IF gvl_p.arrStatusEstufas[2].fimSecagem = systemtime_to_dt(gvl.fbGetLocalSystemTime.systemTime) THEN
+	bTravaRegressivaS21:= TRUE;
+	ELSE
+		bTravaRegressivaS21:= FALSE;
+END_IF
+
+IF gvl_p.arrStatusEstufas[2].fimArmazenagem = systemtime_to_dt(gvl.fbGetLocalSystemTime.systemTime) THEN
+	bTravaRegressivaA21:= TRUE;
+	gvl_p.arrStatusEstufas[2].fimSecagem := DT#1970-1-1-0:0:0;
+	ELSE
+		bTravaRegressivaA21:= FALSE;
+END_IF
+
+// ROTINA DE VERIFICAÇÃO DE COR --------------------------------------------------------------------------------------
+
+FOR i:=1 TO 24 BY 1 DO
+IF GVL_p.aPositionsE019[i].cor = 0 THEN
+	gvl_p.aPositionsE019[i].color:= 16#FFFFFFFF;
+	ELSIF gvl_p.aPositionsE019[i].cor = 1 THEN
+		gvl_p.aPositionsE019[i].color:= 16#FF00C000;
+		ELSIF gvl_p.aPositionsE019[i].cor = 2 THEN
+		gvl_p.aPositionsE019[i].color:= 16#FFFFFF00;
+END_IF
+
+IF GVL_p.aPositionsE020[i].cor = 0 THEN
+	gvl_p.aPositionsE020[i].color:= 16#FFFFFFFF;
+	ELSIF gvl_p.aPositionsE020[i].cor = 1 THEN
+		gvl_p.aPositionsE020[i].color:= 16#FF00C000;
+		ELSIF gvl_p.aPositionsE020[i].cor = 2 THEN
+		gvl_p.aPositionsE020[i].color:= 16#FFFFFF00;
+END_IF
+
+IF GVL_p.aPositionsE021[i].cor = 0 THEN
+	gvl_p.aPositionsE021[i].color:= 16#FFFFFFFF;
+	ELSIF gvl_p.aPositionsE021[i].cor = 1 THEN
+		gvl_p.aPositionsE021[i].color:= 16#FF00C000;
+		ELSIF gvl_p.aPositionsE021[i].cor = 2 THEN
+		gvl_p.aPositionsE021[i].color:= 16#FFFFFF00;
+END_IF
+END_FOR
+
+FOR l:=1 TO 6 BY 1 DO
+	IF GVL_p.corPosReator1[l].cor = 0 THEN
+	GVL_p.corPosReator1[l].color:= 16#FFFFFFFF;
+	ELSIF GVL_p.corPosReator1[l].cor = 1 THEN
+		GVL_p.corPosReator1[l].color:= 16#FF00C000;
+	END_IF
+		
+	IF GVL_p.corPosReator2[l].cor = 0 THEN
+	GVL_p.corPosReator2[l].color:= 16#FFFFFFFF;
+	ELSIF GVL_p.corPosReator2[l].cor = 1 THEN
+		GVL_p.corPosReator2[l].color:= 16#FF00C000;
+	END_IF
+	
+	IF GVL_p.corPosReator3[l].cor = 0 THEN
+	GVL_p.corPosReator3[l].color:= 16#FFFFFFFF;
+	ELSIF GVL_p.corPosReator3[l].cor = 1 THEN
+		GVL_p.corPosReator3[l].color:= 16#FF00C000;
+	END_IF
+END_FOR
+
+// ROTINA SYSTEM DATE TIME ---------------------------------------------------------------------------------------------
+
+gvl.fbGetLocalSystemTime(
+sNetID:= ,
+bEnable:= TRUE,
+dwCycle:= 1,
+dwOpt:= ,
+tTimeout:= ,
+bValid=> ,
+systemTime=> ,
+tzID=> );
+
+gvl.sSystemDateTime := systemtime_to_string(gvl.fbGetLocalSystemTime.systemTime);
+gvl.sSystemDate:= MID(STR:= gvl.sSystemDateTime , LEN:= 10, POS:=1 );
+gvl.sSystemTime:= MID(STR:= gvl.sSystemDateTime , LEN:= 8, POS:=12 );
+
+// ROTINA DE SEGURANÇA -----------------------------------------------------------------------------------------------------
+IF gvl.zona1atual_019 > gvl_p.zonaSegSetpt_019 OR gvl.zona2atual_019 > gvl_p.zonaSegSetpt_019 THEN
+	gvl.emergencia019:= TRUE;
+	gvl.pwEmerg_019:= TRUE;
+END_IF
+
+IF gvl.zona1atual_020 > gvl_p.zonaSegSetpt_020 OR gvl.zona2atual_020 > gvl_p.zonaSegSetpt_020 THEN
+	gvl.emergencia020:= TRUE;
+	gvl.pwEmerg_020:= TRUE;
+END_IF
+
+IF gvl.zona1atual_021 > gvl_p.zonaSegSetpt_021 OR gvl.zona2atual_021 > gvl_p.zonaSegSetpt_021 THEN
+	gvl.emergencia021:= TRUE;
+	gvl.pwEmerg_021:= TRUE;
+END_IF
+
+// LINK DE VARIAVEIS COM IOs ESTUFA 019 ------------------------------------------------------------------------------------
+
+	gvl.sobrecarga_M1_vent_019:= gvl.DigitalIn1[1];
+	gvl.sobrecarga_M2_vent_019:= gvl.DigitalIn1[2];
+	gvl.sobrecarga_Purga_019:= gvl.DigitalIn1[4];
+	gvl.falhaTempHigh_019:= gvl.DigitalIn1[6];
+	gvl.queimador1_block_019:= gvl.DigitalIn1[8];
+	gvl.queimador2_block_019:= gvl.DigitalIn1[10];
+	gvl.ventilacao_Ligada_019:= gvl.DigitalIn1[12];
+	gvl.aquecimento_Desligado_019:= gvl.DigitalIn1[3];
+	gvl.aquecimento_Ligado_019:= gvl.DigitalIn1[5];
+	gvl.fimCicloAquecimento_019:= gvl.DigitalIn1[7];
+	gvl.purgandoCamara_019:= gvl.DigitalIn1[9];
+	gvl.inEmergencia019:= gvl.DigitalIn3[14];
+	gvl.DigitalOut1[7]:= gvl.liga_ventilacao_019;
+	gvl.DigitalOut1[8]:= gvl.liga_aquecimento_019;
+	gvl.DigitalOut1[9]:= gvl.desl_aquecimento_019;
+	gvl.DigitalOut2[9]:= gvl.emergencia019;
+	
+
+// LINK DE VARIAVEIS COM IOs ESTUFA 020 ------------------------------------------------------------------------------------
+
+	gvl.sobrecarga_M1_vent_020:= gvl.DigitalIn1[13];
+	gvl.sobrecarga_M2_vent_020:= gvl.DigitalIn1[14];
+	gvl.sobrecarga_Purga_020:= gvl.DigitalIn1[15];
+	gvl.falhaTempHigh_020:= gvl.DigitalIn2[2];
+	gvl.queimador1_block_020:= gvl.DigitalIn2[4];
+	gvl.queimador2_block_020:= gvl.DigitalIn2[6];
+	gvl.ventilacao_Ligada_020:= gvl.DigitalIn2[8];
+	gvl.aquecimento_Desligado_020:= gvl.DigitalIn1[15];
+	gvl.aquecimento_Ligado_020:= gvl.DigitalIn2[1];
+	gvl.fimCicloAquecimento_020:= gvl.DigitalIn2[3];
+	gvl.purgandoCamara_020:= gvl.DigitalIn2[5];
+	gvl.inEmergencia020:= gvl.DigitalIn3[15];
+	gvl.DigitalOut1[12]:= gvl.liga_ventilacao_020;
+	gvl.DigitalOut1[11]:= gvl.liga_aquecimento_020;
+	gvl.DigitalOut1[10]:= gvl.desl_aquecimento_020;
+	gvl.DigitalOut2[10]:= gvl.emergencia020;
+	
+
+// LINK DE VARIAVEIS COM IOs ESTUFA 021 ------------------------------------------------------------------------------------
+
+	gvl.sobrecarga_M1_vent_021:= gvl.DigitalIn2[9];
+	gvl.sobrecarga_M2_vent_021:= gvl.DigitalIn2[10];
+	gvl.sobrecarga_Purga_021:= gvl.DigitalIn2[12];
+	gvl.falhaTempHigh_021:= gvl.DigitalIn2[14];
+	gvl.queimador1_block_021:= gvl.DigitalIn2[16];
+	gvl.queimador2_block_021:= gvl.DigitalIn3[2];
+	gvl.ventilacao_Ligada_021:= gvl.DigitalIn3[4];
+	gvl.aquecimento_Desligado_021:= gvl.DigitalIn2[11];
+	gvl.aquecimento_Ligado_021:= gvl.DigitalIn2[13];
+	gvl.fimCicloAquecimento_021:= gvl.DigitalIn2[15];
+	gvl.purgandoCamara_021:= gvl.DigitalIn3[1];
+	gvl.inEmergencia021:= gvl.DigitalIn3[16];
+	gvl.DigitalOut1[13]:= gvl.liga_ventilacao_021;
+	gvl.DigitalOut1[14]:= gvl.liga_aquecimento_021;
+	gvl.DigitalOut1[15]:= gvl.desl_aquecimento_021;
+	gvl.DigitalOut2[11]:= gvl.emergencia021;
+	
+
+// LINK DE VARIAVEIS OI PRODWIN --------------------------------------------------------------------------
+
+	gvl.DigitalOut1[1]:= gvl.pwProd_019;
+	gvl.DigitalOut1[2]:= gvl.pwEmerg_019;
+	gvl.DigitalOut1[3]:= gvl.pwProd_020;
+	gvl.DigitalOut1[4]:= gvl.pwEmerg_020;
+	gvl.DigitalOut1[5]:= gvl.pwProd_021;
+	gvl.DigitalOut1[6]:= gvl.pwEmerg_021;
+
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="221" Count="0" />
+      <LineId Id="343" Count="0" />
+      <LineId Id="434" Count="0" />
+      <LineId Id="577" Count="1" />
+      <LineId Id="225" Count="0" />
+      <LineId Id="469" Count="0" />
+      <LineId Id="226" Count="1" />
+      <LineId Id="229" Count="0" />
+      <LineId Id="402" Count="1" />
+      <LineId Id="414" Count="0" />
+      <LineId Id="406" Count="1" />
+      <LineId Id="410" Count="0" />
+      <LineId Id="408" Count="0" />
+      <LineId Id="411" Count="1" />
+      <LineId Id="666" Count="7" />
+      <LineId Id="665" Count="0" />
+      <LineId Id="675" Count="7" />
+      <LineId Id="674" Count="0" />
+      <LineId Id="404" Count="0" />
+      <LineId Id="363" Count="0" />
+      <LineId Id="372" Count="0" />
+      <LineId Id="362" Count="0" />
+      <LineId Id="364" Count="0" />
+      <LineId Id="366" Count="0" />
+      <LineId Id="870" Count="0" />
+      <LineId Id="904" Count="0" />
+      <LineId Id="367" Count="0" />
+      <LineId Id="913" Count="0" />
+      <LineId Id="915" Count="3" />
+      <LineId Id="914" Count="0" />
+      <LineId Id="922" Count="0" />
+      <LineId Id="924" Count="9" />
+      <LineId Id="923" Count="0" />
+      <LineId Id="935" Count="0" />
+      <LineId Id="937" Count="9" />
+      <LineId Id="936" Count="0" />
+      <LineId Id="365" Count="0" />
+      <LineId Id="920" Count="0" />
+      <LineId Id="919" Count="0" />
+      <LineId Id="948" Count="1" />
+      <LineId Id="273" Count="0" />
+      <LineId Id="267" Count="0" />
+      <LineId Id="292" Count="0" />
+      <LineId Id="320" Count="0" />
+      <LineId Id="326" Count="0" />
+      <LineId Id="269" Count="0" />
+      <LineId Id="322" Count="0" />
+      <LineId Id="294" Count="0" />
+      <LineId Id="323" Count="1" />
+      <LineId Id="288" Count="0" />
+      <LineId Id="295" Count="0" />
+      <LineId Id="290" Count="0" />
+      <LineId Id="298" Count="0" />
+      <LineId Id="464" Count="0" />
+      <LineId Id="466" Count="2" />
+      <LineId Id="465" Count="0" />
+      <LineId Id="293" Count="0" />
+      <LineId Id="501" Count="16" />
+      <LineId Id="328" Count="0" />
+      <LineId Id="524" Count="16" />
+      <LineId Id="523" Count="0" />
+      <LineId Id="518" Count="0" />
+      <LineId Id="317" Count="0" />
+      <LineId Id="329" Count="0" />
+      <LineId Id="334" Count="1" />
+      <LineId Id="330" Count="0" />
+      <LineId Id="338" Count="0" />
+      <LineId Id="332" Count="1" />
+      <LineId Id="342" Count="0" />
+      <LineId Id="339" Count="1" />
+      <LineId Id="331" Count="0" />
+      <LineId Id="552" Count="11" />
+      <LineId Id="551" Count="0" />
+      <LineId Id="564" Count="11" />
+      <LineId Id="230" Count="0" />
+      <LineId Id="576" Count="0" />
+      <LineId Id="231" Count="9" />
+      <LineId Id="615" Count="6" />
+      <LineId Id="614" Count="0" />
+      <LineId Id="623" Count="6" />
+      <LineId Id="622" Count="0" />
+      <LineId Id="241" Count="0" />
+      <LineId Id="374" Count="5" />
+      <LineId Id="756" Count="0" />
+      <LineId Id="751" Count="0" />
+      <LineId Id="753" Count="2" />
+      <LineId Id="752" Count="0" />
+      <LineId Id="382" Count="0" />
+      <LineId Id="757" Count="0" />
+      <LineId Id="759" Count="3" />
+      <LineId Id="758" Count="0" />
+      <LineId Id="373" Count="0" />
+      <LineId Id="750" Count="0" />
+      <LineId Id="243" Count="14" />
+      <LineId Id="989" Count="0" />
+      <LineId Id="258" Count="0" />
+      <LineId Id="1005" Count="1" />
+      <LineId Id="1056" Count="0" />
+      <LineId Id="1004" Count="0" />
+      <LineId Id="1007" Count="0" />
+      <LineId Id="1001" Count="1" />
+      <LineId Id="1057" Count="0" />
+      <LineId Id="991" Count="0" />
+      <LineId Id="1003" Count="0" />
+      <LineId Id="990" Count="0" />
+      <LineId Id="992" Count="0" />
+      <LineId Id="1058" Count="0" />
+      <LineId Id="993" Count="0" />
+      <LineId Id="1059" Count="0" />
+      <LineId Id="259" Count="0" />
+      <LineId Id="416" Count="11" />
+      <LineId Id="1000" Count="0" />
+      <LineId Id="428" Count="1" />
+      <LineId Id="415" Count="0" />
+      <LineId Id="994" Count="0" />
+      <LineId Id="1048" Count="0" />
+      <LineId Id="430" Count="0" />
+      <LineId Id="470" Count="12" />
+      <LineId Id="999" Count="0" />
+      <LineId Id="483" Count="1" />
+      <LineId Id="463" Count="0" />
+      <LineId Id="995" Count="0" />
+      <LineId Id="1051" Count="0" />
+      <LineId Id="485" Count="13" />
+      <LineId Id="998" Count="0" />
+      <LineId Id="499" Count="1" />
+      <LineId Id="261" Count="0" />
+      <LineId Id="996" Count="1" />
+      <LineId Id="262" Count="1" />
+      <LineId Id="799" Count="0" />
+      <LineId Id="798" Count="0" />
+      <LineId Id="800" Count="4" />
+      <LineId Id="264" Count="1" />
+      <LineId Id="178" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

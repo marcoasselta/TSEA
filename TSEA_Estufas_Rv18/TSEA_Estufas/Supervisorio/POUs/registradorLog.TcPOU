@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="registradorLog" Id="{a508c4aa-10ae-4ca7-86e7-a9f98e066205}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM registradorLog
+VAR
+	i: INT;
+	j: INT;
+	k: INT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+IF gvl.logRegister19 <> '' THEN
+	FOR i:=100 TO 1 BY -1 DO
+		IF gvl_p.arrLogEstufa19[i] <> '' THEN
+			gvl_p.arrLogEstufa19[i+1]:= gvl_p.arrLogEstufa19[i];
+			gvl_p.arrLogEstufa19[i]:= '';
+		END_IF
+	END_FOR
+	gvl_p.arrLogEstufa19[1]:= concat(gvl_p.arrLogEstufa19[1],gvl.sSystemDateTime);
+	gvl_p.arrLogEstufa19[1]:= concat(gvl_p.arrLogEstufa19[1],'    ');
+	gvl_p.arrLogEstufa19[1]:= concat(gvl_p.arrLogEstufa19[1],gvl.logRegister19);
+	gvl.sCmdInsertLog:= 'INSERT INTO [dbo].[LogGeneral] ([HistoricalTime],[Description])VALUES($'$',$'$')';
+	gvl.sCmdInsertLog:= insert(gvl.sCmdInsertLog,gvl.logRegister19,74);	
+	gvl.sCmdInsertLog:= insert(gvl.sCmdInsertLog,gvl.sSystemDateTime,71);
+	gvl.bInsertLog:=true;
+	gvl.logRegister19:= '';
+	
+	
+END_IF
+]]></ST>
+    </Implementation>
+    <LineIds Name="registradorLog">
+      <LineId Id="6" Count="0" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="9" Count="1" />
+      <LineId Id="33" Count="1" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="37" Count="1" />
+      <LineId Id="36" Count="0" />
+      <LineId Id="77" Count="1" />
+      <LineId Id="76" Count="0" />
+      <LineId Id="79" Count="0" />
+      <LineId Id="22" Count="0" />
+      <LineId Id="64" Count="0" />
+      <LineId Id="67" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="57" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

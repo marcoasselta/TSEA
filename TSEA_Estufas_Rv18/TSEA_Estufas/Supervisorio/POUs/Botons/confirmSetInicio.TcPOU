@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="confirmSetInicio" Id="{798cbf82-934b-4c29-9928-68e4d06c4347}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM confirmSetInicio
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[gvl.progInicio[gvl.actEst]:= 'DT#20';
+gvl.progInicio[gvl.actEst]:= concat(gvl.progInicio[gvl.actEst],gvl.ano);
+gvl.progInicio[gvl.actEst]:= concat(gvl.progInicio[gvl.actEst],'-');
+gvl.progInicio[gvl.actEst]:= concat(gvl.progInicio[gvl.actEst],gvl.mes);
+gvl.progInicio[gvl.actEst]:= concat(gvl.progInicio[gvl.actEst],'-');
+gvl.progInicio[gvl.actEst]:= concat(gvl.progInicio[gvl.actEst],gvl.dia);
+gvl.progInicio[gvl.actEst]:= concat(gvl.progInicio[gvl.actEst],'-');
+gvl.progInicio[gvl.actEst]:= concat(gvl.progInicio[gvl.actEst],gvl.hora);
+gvl.progInicio[gvl.actEst]:= concat(gvl.progInicio[gvl.actEst],':');
+gvl.progInicio[gvl.actEst]:= concat(gvl.progInicio[gvl.actEst],gvl.minuto);
+gvl.progInicio[gvl.actEst]:= concat(gvl.progInicio[gvl.actEst],':0');
+]]></ST>
+    </Implementation>
+    <LineIds Name="confirmSetInicio">
+      <LineId Id="6" Count="9" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="19" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

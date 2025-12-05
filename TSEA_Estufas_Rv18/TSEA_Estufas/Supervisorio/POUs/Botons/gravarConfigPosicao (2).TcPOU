@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="gravarConfigPosicao" Id="{456eead6-baa8-4bd9-b524-8f603c549c24}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM gravarConfigPosicao
+VAR
+	bReator: ARRAY[0..2] OF BOOL;
+	posicaoAtual: STRING;
+	enviaLog: STRING;
+	estufaAtual: STRING;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+// VERIFICA SE HA REATOR E MUDA A COR DO QUADRADO ------------------------------------
+IF bReator[0] THEN
+	gvl_p.aPositionsE019[gvl.actPos].cor:= 1;
+	gvl_p.bCarrinhoReator1:=TRUE;
+	gvl.cfgPos_Reat019:=TRUE;
+	ELSE
+		gvl_p.aPositionsE019[gvl.actPos].cor:=2;
+		gvl_p.bCarrinhoReator1:=FALSE;
+		gvl.cfgPos_Reat019:=FALSE;
+END_IF
+
+
+
+// REGISTRA AS INFORMAÇÕES EM CADA POSIÇÃO -------------------------------------------------------------
+FOR gvl.n:=1 TO 24 BY 1 DO
+	IF gvl.actPos = gvl.n THEN
+		gvl_p.aPositionsE019[gvl.n].numOF:= gvl.cfgPos_OF019;
+		gvl_p.aPositionsE019[gvl.n].lote:= gvl.cfgPos_LT019;
+		gvl_p.aPositionsE019[gvl.n].class:= gvl.cfgPos_Class019;
+		gvl_p.aPositionsE019[gvl.n].pot:= gvl.cfgPos_Pot019;
+		gvl_p.aPositionsE019[gvl.n].reator:= gvl.cfgPos_Reat019;
+	END_IF
+END_FOR
+
+// DEFINIÇÃO DOS TEMPOS DE ACORDO COM AS CLASSES ----------------------------------------------
+IF gvl_p.aPositionsE019[gvl.actPos].class <= 15 THEN
+		GVL_p.arrStatusEstufas[gvl.actEst].tempoSecagem := T#60H;
+		GVL_p.arrStatusEstufas[gvl.actEst].tempoArmazenagem := T#192H;
+		gvl.totalSeca[0]:= '60';
+		gvl_p.arrStatusEstufas[gvl.actEst].tempSeca:= 120;
+		gvl.totalArm[0]:= '192';
+		gvl_p.arrStatusEstufas[gvl.actEst].tempArm:= 70;
+		ELSIF gvl_p.aPositionsE019[gvl.actPos].class > 15 THEN
+			GVL_p.arrStatusEstufas[gvl.actEst].tempoSecagem:= T#96H;
+			GVL_p.arrStatusEstufas[gvl.actEst].tempoArmazenagem:= T#240H;
+			gvl.totalSeca[0]:= '96';
+			gvl_p.arrStatusEstufas[gvl.actEst].tempSeca:= 120;
+			gvl.totalArm[0]:= '240';
+			gvl_p.arrStatusEstufas[gvl.actEst].tempArm:= 70;
+END_IF
+
+gvl.totalPos[gvl.actEst]:= gvl.totalPos[gvl.actEst] + 1;
+
+///// GERADOR DE LOG -------------------------------------------------------------
+
+posicaoAtual:= INT_TO_STRING(gvl.actPos);
+envialog:= 'Posição Nº ';
+enviaLog:= concat(envialog, posicaoAtual);
+enviaLog:= concat(envialog,' gravada. ESTUFA 019');
+gvl.logRegister19:= envialog;
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="gravarConfigPosicao">
+      <LineId Id="104" Count="1" />
+      <LineId Id="6" Count="8" />
+      <LineId Id="85" Count="0" />
+      <LineId Id="94" Count="0" />
+      <LineId Id="106" Count="0" />
+      <LineId Id="15" Count="4" />
+      <LineId Id="119" Count="0" />
+      <LineId Id="121" Count="0" />
+      <LineId Id="123" Count="0" />
+      <LineId Id="125" Count="0" />
+      <LineId Id="24" Count="0" />
+      <LineId Id="107" Count="0" />
+      <LineId Id="25" Count="14" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="128" Count="0" />
+      <LineId Id="58" Count="0" />
+      <LineId Id="73" Count="0" />
+      <LineId Id="41" Count="0" />
+      <LineId Id="65" Count="0" />
+      <LineId Id="50" Count="0" />
+      <LineId Id="57" Count="0" />
+      <LineId Id="51" Count="1" />
+      <LineId Id="56" Count="0" />
+      <LineId Id="53" Count="0" />
+      <LineId Id="48" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

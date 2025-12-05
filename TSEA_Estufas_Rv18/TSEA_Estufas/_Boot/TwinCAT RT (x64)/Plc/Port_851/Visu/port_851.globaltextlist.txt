@@ -1,0 +1,167 @@
+Id;Default
+820;        203/020
+674;        203/021
+492;       203/019
+604;       203/020
+1072;       203/021
+536;     203/019
+643;%
+213;%.
+249;%.01f
+115;%.1
+939;%.1f
+567;%.2f
+805;%1f
+825;%1f.
+746;%d
+546;%dt
+1289;%f
+50;%i
+969;%i º
+400;%s
+116;%s Etapa do processo
+51;%t
+289;%t[d MMM yy HH:mm]
+1177;%t[]
+694;%[d MMM yy HH:mm]
+998;-
+787;10
+744;12
+916;120
+823;120º
+423;13:00:30 20/02/2024
+541;18
+617;2024
+1015;203
+731;203/019
+419;203/020
+240;203/021
+430;40
+1007;:
+245;Adicionar
+1475;Adicionar comentário ao Log
+1014;Adicionar Reator
+798;Admin
+899;Agendar Início?
+876;Ajustar Data de Início do Programa
+250;Alarme
+700;Aquecimento
+11;Aquecimento Desligado
+995;Aquecimento Ligado
+554;Armazenagem:
+1310;ATENÇÃO!$R$NA adição de reatores agora irá alterar o término da programação ativa. Confirma a adição de um reator na posição     do carrinho?
+133;ATENÇÃO!$R$NA adição de reatores agora irá alterar o término da programação ativa. Deseja continuar com a adição de um reator?
+444;ATENÇÃO!$R$NA adição de um reator agora irá alterar o término da programação ativa. Deseja continuar com a adição de um reator?
+650;ATENÇÃO!Confirma a adição de um reator na posição     do carrinho?
+834;Cancela
+451;Cancelar
+113;celsios
+994;Classe
+246;Classe:
+575;Configuração %s
+330;Configuração Posição
+440;Configuração Posição 01
+1440;Confirma
+96;Confirma a adição de um reator na posição     do carrinho?
+959;Confirma o inicio de um programa com:
+1385;Confirmar o início do programa para a Estufa %s com as seguintes configurações?
+688;Confirmar o início do programa para a Estufa 203/019 com as seguintes configurações?
+571;Continuar
+416;Dashboard
+532;Data
+1391;Data:
+1044;Desliga Ciclo de Aquecimento
+609;Edite a data de inicio do programa:
+772;Estufa 01
+260;Estufa 02
+539;Estufa 203/019
+502;Estufa 203/020
+1056;Estufa 203/021
+531;Eventos
+144;ewfqreg
+713;Falha Temperatura Alta
+733;Fim da Armasenagem:
+804;Fim da Armazenagem:
+716;Fim da Secagem:
+786;Fim de Ciclo de Aquecimento
+117;Fim de Ciclo de AquecimentoDesligado
+511;final
+383;Finaliza Programação
+693;Graus
+429;Grava Posição
+603;Gravar Posição
+648;Gráfico
+891;Gráfico de Acompanhamento da Temperatura
+726;Gráficos
+515;Histórico
+1057;Hora:
+41;Horas
+422;Inícia Programação
+652;Início da Secagem:
+230;Início de Programa
+752;Legenda
+220;Liga Ciclo de Aquecimento
+453;Liga Ventilação
+545;Limpar Posição
+1033;Manutenção
+917;None
+15;Numero de Série:
+521;Numero OF:
+655;NÃO
+705;Operator
+940;Posição de Reator Ocupada
+378;Posição Livre
+484;Posição Ocupada Com Reator
+678;Posição Ocupada COM Reator
+958;Posição ocupada por completo
+806;Posição Ocupada Sem Reator
+290;Posição Ocupada SEM Reator
+288;Possui Reator
+685;Potência:
+498;Programação
+962;Programação Estufa 203/019
+493;Purgando Câmara
+526;Qtd. Pos. Utilizadas:
+941;Queimador 1 Bloqueado
+928;Queimador 2 Bloqueado
+895;Reator
+857;Secagem
+1242;Secagem Reator
+119;Secagem:
+28;Segurança
+673;Service
+630;Set Point
+725;Set Point:
+236;SIM
+387;Sistema Supervisório de Estufas
+125;Sobrecarga Motor 1 de Ventilação
+829;Sobrecarga Motor 2 de Ventilação
+662;Sobrecarga Motor do Exaustor de Purga
+362;Status da Programação
+988;Status de cada posição
+103;Série:
+734;tab
+479;TabTest
+229;Temperatura Atual:
+983;Temperatura de Armazenagem:
+449;Temperatura de Secagem:
+735;Temperatura de Segurança
+225;Temperatura Segurança
+542;Temperatura Zona 1
+170;Temperatura Zona 1:
+296;Temperatura Zona 2
+560;Temperatura Zona 2:
+759;TemperaturSegurança
+931;Tempo de Armazenagem:
+822;Tempo de Secagem:
+12;Tempo Restante
+434;Tempo Restante:
+534;Test2
+778;Total de posições:
+283;Total de Posições:
+585;Total de Reatores:
+443;Unidades
+915;Ventilação
+918;Ventilação Ligada
+40;xfdsfg
+414;ºC

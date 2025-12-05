@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="posCarrinho2" Id="{93c77f7d-416f-4f57-a1dd-ea8941314128}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM posCarrinho2
+VAR
+	timeCalc: TIME;
+	bNotificaTime: BOOL:= TRUE;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+///// CALCULO DE DEFINIÇÃO SE O PROCESSO PASSA DAS 36 HORAS LIMITES ----------------------------------------
+timeCalc:= (gvl_p.arrStatusEstufas[1].prevFimSeca - systemtime_to_dt(gvl.fbGetLocalSystemTime.systemTime));
+IF timeCalc < T#24H THEN
+	bNotificaTime:= FALSE;
+	ELSE
+		bNotificaTime:= TRUE;
+		
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="posCarrinho2">
+      <LineId Id="6" Count="0" />
+      <LineId Id="16" Count="2" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="22" Count="2" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

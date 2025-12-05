@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="statusEstufa" Id="{78d33cff-f591-4a5b-af6c-5fa02fa347fc}">
+    <Declaration><![CDATA[TYPE statusEstufa :
+STRUCT
+	tempoSecagem: TIME; //DEFINIDO NA TELA ConfigPosicao
+	tempoArmazenagem: TIME; //DEFINIDO NA TELA ConfigPosicao
+	inicioSecagem: DATE_AND_TIME;
+	fimSecagem: DATE_AND_TIME;
+	prevFimSeca: DATE_AND_TIME;
+	fimArmazenagem: DATE_AND_TIME;
+	statusInicioSecagem: STRING;
+	statusFimSecagem: STRING;
+	statusFimArmazenagem: STRING;
+	anoSec: STRING;
+	mesSec: STRING;
+	diaSec: STRING;
+	horaSec: STRING;
+	minutoSec: STRING;
+	anoArm: STRING;
+	mesArm: STRING;
+	diaArm: STRING;
+	horaArm: STRING;
+	minutoArm: STRING;
+	inicioReator: STRING;
+	dtInicioReator: DATE_AND_TIME;
+	start: BOOL;
+	tempSeca: INT;
+	tempArm: int;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

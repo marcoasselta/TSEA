@@ -1,0 +1,187 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="historical" Id="{81f57b33-e15a-4aed-8714-0c721fd5b1e9}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM historical
+VAR
+	
+	state: INT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+
+
+CASE state OF
+
+0:	
+IF gvl.bHistory THEN
+	CASE gvl.radioEstufa OF
+0:
+	IF gvl.radioFiltro = 0 THEN
+		state:=10;
+	gvl.sCmdSelect19:= 'SELECT [data],[hora],[auto],[pos],[OF],[lote],[class],[pot],[isola],[fPot],[reator],[time],[temp] FROM [dbo].[ProcessTable19] 
+	WHERE data=$'';
+	gvl.sCmdSelect19:= concat(gvl.sCmdSelect19,gvl.arrCVSfilter[0].ano);
+	gvl.sCmdSelect19:= concat(gvl.sCmdSelect19,'-');
+	gvl.sCmdSelect19:= concat(gvl.sCmdSelect19,gvl.arrCVSfilter[0].mes);
+	gvl.sCmdSelect19:= concat(gvl.sCmdSelect19,'-');
+	gvl.sCmdSelect19:= concat(gvl.sCmdSelect19,gvl.arrCVSfilter[0].dia);
+	gvl.sCmdSelect19:= concat(gvl.sCmdSelect19,'$';');
+	ELSIF gvl.radioFiltro = 1 THEN
+		state:=10;
+	gvl.sCmdSelect19:= 'SELECT [data],[hora],[auto],[pos],[OF],[lote],[class],[pot],[isola],[fPot],[reator],[time],[temp] FROM [dbo].[ProcessTable19] 
+	WHERE OF=$'';
+	gvl.sCmdSelect19:= concat(gvl.sCmdSelect19,gvl.arrCVSfilter[0].ordem);
+	gvl.sCmdSelect19:= concat(gvl.sCmdSelect19,'$';');
+	ELSIF gvl.radioFiltro = 2 THEN
+		state:=10;
+	gvl.sCmdSelect19:= 'SELECT [data],[hora],[auto],[pos],[OF],[lote],[class],[pot],[isola],[fPot],[reator],[time],[temp] FROM [dbo].[ProcessTable19] 
+	WHERE lote=$'';
+	gvl.sCmdSelect19:= concat(gvl.sCmdSelect19,gvl.arrCVSfilter[0].lote);
+	gvl.sCmdSelect19:= concat(gvl.sCmdSelect19,'$';');
+	END_IF
+	
+1:
+	IF gvl.radioFiltro = 0 THEN
+		state:=10;
+	gvl.sCmdSelect19:= 'SELECT [data],[hora],[auto],[pos],[OF],[lote],[class],[pot],[isola],[fPot],[reator],[time],[temp] FROM [dbo].[ProcessTable20] 
+	WHERE data=$'';
+	gvl.sCmdSelect19:= concat(gvl.sCmdSelect19,gvl.arrCVSfilter[0].ano);
+	gvl.sCmdSelect19:= concat(gvl.sCmdSelect19,'-');
+	gvl.sCmdSelect19:= concat(gvl.sCmdSelect19,gvl.arrCVSfilter[0].mes);
+	gvl.sCmdSelect19:= concat(gvl.sCmdSelect19,'-');
+	gvl.sCmdSelect19:= concat(gvl.sCmdSelect19,gvl.arrCVSfilter[0].dia);
+	gvl.sCmdSelect19:= concat(gvl.sCmdSelect19,'$';');
+	ELSIF gvl.radioFiltro = 1 THEN
+		state:=10;
+	gvl.sCmdSelect19:= 'SELECT [data],[hora],[auto],[pos],[OF],[lote],[class],[pot],[isola],[fPot],[reator],[time],[temp] FROM [dbo].[ProcessTable20] 
+	WHERE OF=$'';
+	gvl.sCmdSelect19:= concat(gvl.sCmdSelect19,gvl.arrCVSfilter[0].ordem);
+	gvl.sCmdSelect19:= concat(gvl.sCmdSelect19,'$';');
+	ELSIF gvl.radioFiltro = 2 THEN
+		state:=10;
+	gvl.sCmdSelect19:= 'SELECT [data],[hora],[auto],[pos],[OF],[lote],[class],[pot],[isola],[fPot],[reator],[time],[temp] FROM [dbo].[ProcessTable20] 
+	WHERE lote=$'';
+	gvl.sCmdSelect19:= concat(gvl.sCmdSelect19,gvl.arrCVSfilter[0].lote);
+	gvl.sCmdSelect19:= concat(gvl.sCmdSelect19,'$';');
+	END_IF
+	
+2:
+	IF gvl.radioFiltro = 0 THEN
+		state:=10;
+	gvl.sCmdSelect19:= 'SELECT [data],[hora],[auto],[pos],[OF],[lote],[class],[pot],[isola],[fPot],[reator],[time],[temp] FROM [dbo].[ProcessTable21] 
+	WHERE data=$'';
+	gvl.sCmdSelect19:= concat(gvl.sCmdSelect19,gvl.arrCVSfilter[0].ano);
+	gvl.sCmdSelect19:= concat(gvl.sCmdSelect19,'-');
+	gvl.sCmdSelect19:= concat(gvl.sCmdSelect19,gvl.arrCVSfilter[0].mes);
+	gvl.sCmdSelect19:= concat(gvl.sCmdSelect19,'-');
+	gvl.sCmdSelect19:= concat(gvl.sCmdSelect19,gvl.arrCVSfilter[0].dia);
+	gvl.sCmdSelect19:= concat(gvl.sCmdSelect19,'$';');
+	ELSIF gvl.radioFiltro = 1 THEN
+		state:=10;
+	gvl.sCmdSelect19:= 'SELECT [data],[hora],[auto],[pos],[OF],[lote],[class],[pot],[isola],[fPot],[reator],[time],[temp] FROM [dbo].[ProcessTable21] 
+	WHERE OF=$'';
+	gvl.sCmdSelect19:= concat(gvl.sCmdSelect19,gvl.arrCVSfilter[0].ordem);
+	gvl.sCmdSelect19:= concat(gvl.sCmdSelect19,'$';');
+	ELSIF gvl.radioFiltro = 2 THEN
+		state:=10;
+	gvl.sCmdSelect19:= 'SELECT [data],[hora],[auto],[pos],[OF],[lote],[class],[pot],[isola],[fPot],[reator],[time],[temp] FROM [dbo].[ProcessTable21] 
+	WHERE lote=$'';
+	gvl.sCmdSelect19:= concat(gvl.sCmdSelect19,gvl.arrCVSfilter[0].lote);
+	gvl.sCmdSelect19:= concat(gvl.sCmdSelect19,'$';');
+	END_IF
+	END_CASE
+ELSE
+	state:=0;	
+END_IF
+
+10:
+IF NOT main.bBusySelect19 THEN
+	state:=20;
+	gvl.bSelect19:= TRUE;
+ELSE
+	state:=10;
+END_IF
+
+20:
+IF NOT main.bBusySelect19 THEN
+	state:=30;
+	gvl.bSelect19:= FALSE;
+	P_TextModeWrite.bWrite:= TRUE;
+ELSE
+	state:=20;
+END_IF
+
+30:
+IF NOT P_TextModeWrite.bBusy AND not P_TextModeWrite.bWrite THEN
+	state:=0;
+	gvl.bHistory:=FALSE;
+ELSE
+	state:=30;
+END_IF
+
+END_CASE
+]]></ST>
+    </Implementation>
+    <LineIds Name="historical">
+      <LineId Id="106" Count="0" />
+      <LineId Id="105" Count="0" />
+      <LineId Id="165" Count="0" />
+      <LineId Id="104" Count="0" />
+      <LineId Id="170" Count="0" />
+      <LineId Id="166" Count="1" />
+      <LineId Id="260" Count="0" />
+      <LineId Id="262" Count="1" />
+      <LineId Id="337" Count="0" />
+      <LineId Id="264" Count="7" />
+      <LineId Id="273" Count="0" />
+      <LineId Id="339" Count="0" />
+      <LineId Id="274" Count="3" />
+      <LineId Id="279" Count="0" />
+      <LineId Id="340" Count="0" />
+      <LineId Id="280" Count="3" />
+      <LineId Id="285" Count="3" />
+      <LineId Id="341" Count="0" />
+      <LineId Id="289" Count="7" />
+      <LineId Id="298" Count="0" />
+      <LineId Id="343" Count="0" />
+      <LineId Id="299" Count="3" />
+      <LineId Id="304" Count="0" />
+      <LineId Id="344" Count="0" />
+      <LineId Id="305" Count="3" />
+      <LineId Id="310" Count="3" />
+      <LineId Id="345" Count="0" />
+      <LineId Id="314" Count="7" />
+      <LineId Id="323" Count="0" />
+      <LineId Id="347" Count="0" />
+      <LineId Id="324" Count="3" />
+      <LineId Id="329" Count="0" />
+      <LineId Id="348" Count="0" />
+      <LineId Id="330" Count="3" />
+      <LineId Id="335" Count="0" />
+      <LineId Id="259" Count="0" />
+      <LineId Id="174" Count="1" />
+      <LineId Id="172" Count="0" />
+      <LineId Id="349" Count="0" />
+      <LineId Id="173" Count="0" />
+      <LineId Id="350" Count="1" />
+      <LineId Id="355" Count="0" />
+      <LineId Id="353" Count="1" />
+      <LineId Id="352" Count="0" />
+      <LineId Id="356" Count="0" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="358" Count="2" />
+      <LineId Id="363" Count="0" />
+      <LineId Id="361" Count="1" />
+      <LineId Id="357" Count="0" />
+      <LineId Id="364" Count="0" />
+      <LineId Id="107" Count="0" />
+      <LineId Id="365" Count="1" />
+      <LineId Id="368" Count="2" />
+      <LineId Id="367" Count="0" />
+      <LineId Id="169" Count="0" />
+      <LineId Id="108" Count="0" />
+      <LineId Id="176" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="ReportGenerator" Id="{06d1c6e1-115b-4260-85c1-d2a32fe3863c}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM ReportGenerator
+VAR
+	i: UDINT;
+	letraD: INT;
+	letraH: INT;
+	letraM: INT;
+	
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+gvl.database[0,0]:= 'Data';
+gvl.database[0,1]:= 'Hora';
+gvl.database[0,2]:= 'Ordem Fabri';
+gvl.database[0,3]:= 'Lote';
+gvl.database[0,4]:= 'Posicao';
+gvl.database[0,5]:= 'Reator';
+gvl.database[0,6]:= 'Tempo em Processo';
+gvl.database[0,7]:= 'Temperatura';
+gvl.database[0,8]:= 'Automatico';
+gvl.database[0,9]:=	'Classe';
+gvl.database[0,10]:='Fat. Potencia';
+gvl.database[0,11]:='Isolamento';
+gvl.database[0,12]:='Potencia';
+
+
+FOR i:=1 TO MAX_CSV_ROWS BY 1 DO
+gvl.database[i,0]:= gvl.aSelect19[i].data;
+gvl.database[i,1]:= gvl.aSelect19[i].hora;
+gvl.database[i,2]:= gvl.aSelect19[i].orfb;
+gvl.database[i,3]:= gvl.aSelect19[i].lote;
+gvl.database[i,4]:= gvl.aSelect19[i].pos;
+gvl.database[i,5]:= gvl.aSelect19[i].reator;
+gvl.aSelect19[i].tempo:= delete(gvl.aSelect19[i].tempo,2,1);
+gvl.database[i,6]:= gvl.aSelect19[i].tempo;
+gvl.database[i,7]:= LREAL_TO_STRING(gvl.aSelect19[i].temp);
+gvl.database[i,8]:= gvl.aSelect19[i].auto;
+gvl.database[i,9]:= gvl.aSelect19[i].class;
+gvl.database[i,10]:= gvl.aSelect19[i].fPot;
+gvl.database[i,11]:= LREAL_TO_STRING(gvl.aSelect19[i].isola);
+gvl.database[i,12]:= INT_TO_STRING(REAL_TO_INT(gvl.aSelect19[i].pot));
+END_FOR
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="ReportGenerator">
+      <LineId Id="21" Count="14" />
+      <LineId Id="6" Count="0" />
+      <LineId Id="37" Count="0" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="8" Count="1" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="71" Count="0" />
+      <LineId Id="12" Count="6" />
+      <LineId Id="42" Count="0" />
+      <LineId Id="48" Count="0" />
+      <LineId Id="66" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

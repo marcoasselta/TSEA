@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="selectPos019" Id="{894b9da8-94fd-4354-853e-a18276daef87}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM selectPos019
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[gvl.cfgPos_OF019:= gvl_p.aPositionsE019[gvl.actPos].numOF;
+gvl.cfgPos_LT019:= gvl_p.aPositionsE019[gvl.actPos].lote;
+gvl.cfgPos_Class019:= gvl_p.aPositionsE019[gvl.actPos].class;
+gvl.cfgPos_Pot019:= gvl_p.aPositionsE019[gvl.actPos].pot;
+gvl.cfgPos_Reat019:= gvl_p.aPositionsE019[gvl.actPos].reator;
+
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="selectPos019">
+      <LineId Id="12" Count="5" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

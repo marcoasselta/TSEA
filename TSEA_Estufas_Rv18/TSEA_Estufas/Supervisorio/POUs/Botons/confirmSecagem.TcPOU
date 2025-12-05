@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="confirmSecagem" Id="{b06d3d4f-deb2-4292-8665-7d9fcf5eb2b6}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM confirmSecagem
+VAR
+	tempSeca: STRING;
+	
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//ESTE PROGRAMA TRANSFORMA O INPUT DO DIALOG EM TEMPO DE SECAGEM
+
+tempSeca:= 'T#';
+tempSeca:= concat(tempseca, TIME_TO_STRING(gvl_p.arrStatusEstufas[2].tempoSecagem));
+tempSeca:= concat(tempseca, 'H');
+
+GVL_p.arrStatusEstufas[2].tempoSecagem := STRING_TO_TIME(tempSeca);
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="confirmSecagem">
+      <LineId Id="26" Count="0" />
+      <LineId Id="34" Count="0" />
+      <LineId Id="39" Count="0" />
+      <LineId Id="31" Count="0" />
+      <LineId Id="38" Count="0" />
+      <LineId Id="37" Count="0" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="19" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

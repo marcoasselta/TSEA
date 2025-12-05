@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="Chart_Gen" Id="{ae9b7887-f110-4309-adb8-76e23a2dbda7}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM Chart_Gen
+VAR
+	bstart: BOOL;
+	i: INT;
+	temperatura1: REAL;
+	temperatura2: REAL;
+	j: INT;
+	fbChartTime019: Ton;
+	fbTimerTrigger019: R_trig;
+	fbChartTime020: Ton;
+	fbTimerTrigger020: R_trig;
+	fbChartTime021: Ton;
+	fbTimerTrigger021: R_trig;
+	k: INT;
+	l: INT;
+	m: INT;
+	n: INT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+fbChartTime019(in:=gvl.bstartchart019, pt:=T#10M);
+fbTimerTrigger019(clk:=fbChartTime019.Q);
+
+IF fbTimerTrigger019.Q THEN
+	i:=i+1;
+	IF i <= 720 THEN
+	FOR j:=i TO 720 BY 1 DO
+	gvl_p.arrTemp019[j]:= gvl.zona1atual_019;
+	gvl_p.arrTempVisu019[j]:= gvl.zona2atual_019;
+	END_FOR
+	ELSE
+		i:= 0;
+	END_IF
+	
+	fbChartTime019(in:=FALSE);
+END_IF
+
+fbChartTime020(in:=gvl.bstartchart020, pt:=T#10M);
+fbTimerTrigger020(clk:=fbChartTime020.Q);
+
+IF fbTimerTrigger020.Q THEN
+	k:=k+1;
+	IF k <= 720 THEN
+	FOR l:=k TO 720 BY 1 DO
+	gvl_p.arrTemp020[l]:= gvl.zona1atual_020;
+	gvl_p.arrTempVisu020[l]:= gvl.zona2atual_020;
+	END_FOR
+	ELSE
+		k:= 0;
+	END_IF
+	
+	fbChartTime020(in:=FALSE);
+END_IF
+
+fbChartTime021(in:=gvl.bstartchart021, pt:=T#10M);
+fbTimerTrigger021(clk:=fbChartTime021.Q);
+
+IF fbTimerTrigger021.Q THEN
+	m:=m+1;
+	IF m <= 720 THEN
+	FOR n:=m TO 720 BY 1 DO
+	gvl_p.arrTemp021[n]:= gvl.zona1atual_021;
+	gvl_p.arrTempVisu021[n]:= gvl.zona2atual_021;
+	END_FOR
+	ELSE
+		m:= 0;
+	END_IF
+	
+	fbChartTime021(in:=FALSE);
+END_IF
+
+IF NOT gvl.bstartchart019 THEN
+	i:= 0;
+END_IF
+IF NOT gvl.bstartchart020 THEN
+	k:= 0;
+END_IF
+IF NOT gvl.bstartchart021 THEN
+	m:= 0;
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="Chart_Gen">
+      <LineId Id="6" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="33" Count="0" />
+      <LineId Id="32" Count="0" />
+      <LineId Id="37" Count="0" />
+      <LineId Id="44" Count="0" />
+      <LineId Id="40" Count="0" />
+      <LineId Id="38" Count="1" />
+      <LineId Id="42" Count="0" />
+      <LineId Id="56" Count="1" />
+      <LineId Id="55" Count="0" />
+      <LineId Id="43" Count="0" />
+      <LineId Id="34" Count="1" />
+      <LineId Id="59" Count="1" />
+      <LineId Id="62" Count="13" />
+      <LineId Id="58" Count="0" />
+      <LineId Id="77" Count="1" />
+      <LineId Id="80" Count="13" />
+      <LineId Id="76" Count="0" />
+      <LineId Id="113" Count="0" />
+      <LineId Id="112" Count="0" />
+      <LineId Id="114" Count="1" />
+      <LineId Id="117" Count="1" />
+      <LineId Id="116" Count="0" />
+      <LineId Id="120" Count="1" />
+      <LineId Id="119" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

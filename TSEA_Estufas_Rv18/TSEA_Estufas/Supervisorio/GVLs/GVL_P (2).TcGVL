@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <GVL Name="GVL_P" Id="{ee2886c5-a7e5-4eaa-b955-f10e29fd1208}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL PERSISTENT
+	
+////// VARIAVEIS ESTUFA 019 //////
+
+	zona1setpt_019: INT;
+	zona2setpt_019: INT;
+	zonaSegSetpt_019: INT;
+	setPoint_019: INT;
+	
+////// VARIAVEIS ESTUFA 020 //////
+
+	zona1setpt_020: INT;
+	zona2setpt_020: INT;
+	zonaSegSetpt_020: INT;
+	setPoint_020: INT;
+	
+////// VARIAVEIS ESTUFA 021 //////
+
+	zona1setpt_021: INT;
+	zona2setpt_021: INT;
+	zonaSegSetpt_021: INT;
+	setPoint_021: INT;	
+	
+////// STATUS PROGRAMAÇÃO /////
+
+	arrStatusEstufas: ARRAY[0..2] OF statusEstufa;
+	etapa_process: ARRAY[0..2] OF STRING;
+	
+	arrLogEstufa19: ARRAY[1..100] OF STRING;
+	arrLogEstufa20: ARRAY[1..100] OF STRING;
+	arrLogEstufa21: ARRAY[1..100] OF STRING;
+	
+	
+////// GRAFICO /////////
+
+	arrTemp019: ARRAY[1..720] OF REAL;
+	arrTempVisu019: ARRAY[1..720] OF REAL;
+	arrTemp020: ARRAY[1..720] OF REAL;
+	arrTempVisu020: ARRAY[1..720] OF REAL;
+	arrTemp021: ARRAY[1..720] OF REAL;
+	arrTempVisu021: ARRAY[1..720] OF REAL;
+	
+///// LAYOUT INTERATIVO /////
+
+ 	aReatorE019: ARRAY[1..2, 1..3] OF INT;
+	aPositionsE019: ARRAY[1..24] OF paPositions;
+	aReatorE020: ARRAY[1..2, 1..3] OF INT;
+	aPositionsE020: ARRAY[1..24] OF paPositions;
+	aReatorE021: ARRAY[1..2, 1..3] OF INT;
+	aPositionsE021: ARRAY[1..24] OF paPositions;
+	
+	bCarrinhoReator1: BOOL:= TRUE;
+	bCarrinhoReator2: BOOL:= TRUE;
+	bCarrinhoReator3: BOOL:= TRUE;
+	
+	corPosReator1: ARRAY[1..6] OF raPositions;
+	corPosReator2: ARRAY[1..6] OF raPositions;
+	corPosReator3: ARRAY[1..6] OF raPositions;
+	
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="iniciaProgramacaoEstufa" Id="{015e1116-44cc-49f2-a994-cc5bb42fdc00}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM iniciaProgramacaoEstufa
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+gvl.progInicio[gvl.actEst]:= DT_TO_STRING(gvl.somaTempo);
+
+IF gvl.actEst = 0 THEN
+	gvl.estAtiva:= '203/019';
+	ELSIF gvl.actEst = 1 THEN
+		gvl.estAtiva:= '203/020';
+		ELSIF gvl.actEst = 2 THEN
+			gvl.estAtiva:= '203/021';
+END_IF
+
+(*FOR gvl.n:=1 TO 24 BY 1 DO
+	IF gvl.aPositionsE019[gvl.n].numOF <> 0 THEN
+		gvl.totalPos:= gvl.totalPos + 1;
+	END_IF
+END_FOR*)
+
+gvl.dia:= MID(STR:= gvl.progInicio[gvl.actEst] , LEN:= 2, POS:=12);
+gvl.mes:= MID(STR:= gvl.progInicio[gvl.actEst] , LEN:= 2, POS:=9);
+gvl.ano:= MID(STR:= gvl.progInicio[gvl.actEst] , LEN:= 2, POS:=6);
+gvl.hora:= MID(STR:= gvl.progInicio[gvl.actEst] , LEN:= 2, POS:=15);
+gvl.minuto:= MID(STR:= gvl.progInicio[gvl.actEst] , LEN:= 2, POS:=18);]]></ST>
+    </Implementation>
+    <LineIds Name="iniciaProgramacaoEstufa">
+      <LineId Id="6" Count="14" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="37" Count="0" />
+      <LineId Id="48" Count="3" />
+      <LineId Id="21" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

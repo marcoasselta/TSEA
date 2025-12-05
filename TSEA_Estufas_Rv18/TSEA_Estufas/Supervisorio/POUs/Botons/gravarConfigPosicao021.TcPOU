@@ -1,0 +1,163 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="gravarConfigPosicao021" Id="{aaafc287-5d33-452c-add1-f546db79064b}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM gravarConfigPosicao021
+VAR
+	bReator: ARRAY[0..2] OF BOOL;
+	posicaoAtual: STRING;
+	enviaLog: STRING;
+	estufaAtual: STRING;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// CONTABILIZA A POSIÇÃO TOTAL  MUST BE FIRST-----------------------------------------------------------------
+
+IF gvl_p.aPositionsE021[gvl.actPos].cor = 0 THEN
+		gvl.totalPos[2]:= gvl.totalPos[2]+1;			
+	END_IF
+	
+// VERIFICA SE HA REATOR E MUDA A COR DO QUADRADO ------------------------------------
+IF bReator[2] THEN
+	gvl_p.aPositionsE021[gvl.actPos].cor:= 1;
+	//gvl_p.bCarrinhoReator3:=TRUE;
+	gvl.cfgPos_Reat021:=TRUE;
+	ELSE
+		gvl_p.aPositionsE021[gvl.actPos].cor:=2;
+		//gvl_p.bCarrinhoReator3:=FALSE;
+		gvl.cfgPos_Reat021:=FALSE;	
+END_IF
+
+// REGISTRA AS INFORMAÇÕES EM CADA POSIÇÃO -------------------------------------------------------------
+FOR gvl.n:=1 TO 24 BY 1 DO
+	IF gvl.actPos = gvl.n THEN
+		gvl_p.aPositionsE021[gvl.n].numOF:= gvl.cfgPos_OF021;
+		gvl_p.aPositionsE021[gvl.n].lote:= gvl.cfgPos_LT021;
+		gvl_p.aPositionsE021[gvl.n].class:= gvl.cfgPos_Class021;
+		gvl_p.aPositionsE021[gvl.n].pot:= gvl.cfgPos_Pot021;
+		gvl_p.aPositionsE021[gvl.n].reator:= gvl.cfgPos_Reat021;
+		gvl_p.aPositionsE021[gvl.n].FP:= gvl.cfgPos_FP021;
+		gvl_p.aPositionsE021[gvl.n].isolamento:= gvl.cfgPos_Iso021;
+		gvl_p.aPositionsE021[gvl.n].text:= insert(gvl.cfgPos_OF021,'-',5);
+		gvl_p.aPositionsE021[gvl.n].text:= concat(gvl_p.aPositionsE021[gvl.n].text,gvl.cfgPos_LT021);
+	END_IF
+END_FOR
+
+// DEFINIÇÃO DOS TEMPOS DE ACORDO COM AS CLASSES ----------------------------------------------
+(*IF gvl_p.aPositionsE021[gvl.actPos].class <= 15 THEN
+		GVL_p.arrStatusEstufas[2].tempoSecagem := T#60H;
+		GVL_p.arrStatusEstufas[2].tempoArmazenagem := T#192H;
+		gvl.totalSeca[2]:= '60';
+		gvl_p.arrStatusEstufas[2].tempSeca:= 120;
+		gvl.totalArm[2]:= '192';
+		gvl_p.arrStatusEstufas[2].tempArm:= 70;
+		ELSIF gvl_p.aPositionsE021[gvl.actPos].class > 15 THEN
+			GVL_p.arrStatusEstufas[2].tempoSecagem:= T#96H;
+			GVL_p.arrStatusEstufas[2].tempoArmazenagem:= T#240H;
+			gvl.totalSeca[2]:= '96';
+			gvl_p.arrStatusEstufas[2].tempSeca:= 120;
+			gvl.totalArm[2]:= '240';
+			gvl_p.arrStatusEstufas[2].tempArm:= 70;
+END_IF*)
+IF gvl_p.aPositionsE021[gvl.actPos].pot <= 750 AND gvl_p.aPositionsE021[gvl.actPos].class <= 25 AND gvl_p.aPositionsE021[gvl.actPos].FP = 1 THEN
+	GVL_p.arrStatusEstufas[2].tempoSecagem := T#60H;
+	GVL_p.arrStatusEstufas[2].tempoArmazenagem := T#192H;
+	gvl.totalSeca[2]:= '60';
+	gvl_p.arrStatusEstufas[2].tempSeca:= 120;
+	gvl.totalArm[2]:= '192';
+	gvl_p.arrStatusEstufas[2].tempArm:= 70;
+	ELSIF gvl_p.aPositionsE021[gvl.actPos].pot <= 750 AND gvl_p.aPositionsE021[gvl.actPos].class > 25 AND gvl_p.aPositionsE021[gvl.actPos].FP = 1 THEN
+		GVL_p.arrStatusEstufas[2].tempoSecagem:= T#96H;
+		GVL_p.arrStatusEstufas[2].tempoArmazenagem:= T#240H;
+		gvl.totalSeca[2]:= '96';
+		gvl_p.arrStatusEstufas[2].tempSeca:= 120;
+		gvl.totalArm[2]:= '240';
+		gvl_p.arrStatusEstufas[2].tempArm:= 70;
+	ELSIF gvl_p.aPositionsE021[gvl.actPos].pot > 750 AND gvl_p.aPositionsE021[gvl.actPos].FP = 1 THEN
+		GVL_p.arrStatusEstufas[2].tempoSecagem:= T#96H;
+		GVL_p.arrStatusEstufas[2].tempoArmazenagem:= T#240H;
+		gvl.totalSeca[2]:= '96';
+		gvl_p.arrStatusEstufas[2].tempSeca:= 120;
+		gvl.totalArm[2]:= '240';
+		gvl_p.arrStatusEstufas[2].tempArm:= 70;
+	ELSIF gvl_p.aPositionsE021[gvl.actPos].pot <= 750 AND gvl_p.aPositionsE021[gvl.actPos].class <= 25 AND gvl_p.aPositionsE021[gvl.actPos].FP = 2 THEN
+		GVL_p.arrStatusEstufas[2].tempoSecagem:= T#72H;
+		GVL_p.arrStatusEstufas[2].tempoArmazenagem:= T#240H;
+		gvl.totalSeca[2]:= '72';
+		gvl_p.arrStatusEstufas[2].tempSeca:= 120;
+		gvl.totalArm[2]:= '240';
+		gvl_p.arrStatusEstufas[2].tempArm:= 70;
+	ELSIF gvl_p.aPositionsE021[gvl.actPos].pot <= 750 AND gvl_p.aPositionsE021[gvl.actPos].class > 25 AND gvl_p.aPositionsE021[gvl.actPos].FP = 2 THEN
+		GVL_p.arrStatusEstufas[2].tempoSecagem:= T#96H;
+		GVL_p.arrStatusEstufas[2].tempoArmazenagem:= T#240H;
+		gvl.totalSeca[2]:= '96';
+		gvl_p.arrStatusEstufas[2].tempSeca:= 120;
+		gvl.totalArm[2]:= '240';
+		gvl_p.arrStatusEstufas[2].tempArm:= 70;
+	ELSIF gvl_p.aPositionsE021[gvl.actPos].pot > 750 AND gvl_p.aPositionsE021[gvl.actPos].FP = 2 THEN
+		GVL_p.arrStatusEstufas[2].tempoSecagem:= T#96H;
+		GVL_p.arrStatusEstufas[2].tempoArmazenagem:= T#240H;
+		gvl.totalSeca[2]:= '96';
+		gvl_p.arrStatusEstufas[2].tempSeca:= 120;
+		gvl.totalArm[2]:= '240';
+		gvl_p.arrStatusEstufas[2].tempArm:= 70;	
+END_IF
+
+///// GERADOR DE LOG -------------------------------------------------------------
+
+posicaoAtual:= INT_TO_STRING(gvl.actPos);
+estufaAtual:= INT_TO_STRING(gvl.actEst);
+envialog:= 'Posição Nº ';
+enviaLog:= concat(envialog, posicaoAtual);
+enviaLog:= concat(envialog,' gravada.  ESTUFA 021');
+gvl.logRegister19:= envialog;
+
+gvl.sCmdInsertLog:= 'INSERT INTO [dbo].[LogGeneral] ([HistoricalTime],[Description])VALUES($'$',$'$')';
+gvl.sCmdInsertLog:= insert(gvl.sCmdInsertLog,gvl.logRegister19,74);	
+gvl.sCmdInsertLog:= insert(gvl.sCmdInsertLog,gvl.sSystemDateTime,71);
+gvl.bInsertLog:= TRUE;]]></ST>
+    </Implementation>
+    <LineIds Name="gravarConfigPosicao021">
+      <LineId Id="192" Count="3" />
+      <LineId Id="104" Count="0" />
+      <LineId Id="196" Count="0" />
+      <LineId Id="105" Count="0" />
+      <LineId Id="96" Count="7" />
+      <LineId Id="94" Count="0" />
+      <LineId Id="191" Count="0" />
+      <LineId Id="15" Count="7" />
+      <LineId Id="215" Count="0" />
+      <LineId Id="265" Count="0" />
+      <LineId Id="166" Count="1" />
+      <LineId Id="23" Count="1" />
+      <LineId Id="107" Count="0" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="144" Count="13" />
+      <LineId Id="206" Count="0" />
+      <LineId Id="214" Count="0" />
+      <LineId Id="218" Count="4" />
+      <LineId Id="216" Count="0" />
+      <LineId Id="231" Count="5" />
+      <LineId Id="224" Count="0" />
+      <LineId Id="238" Count="5" />
+      <LineId Id="237" Count="0" />
+      <LineId Id="245" Count="5" />
+      <LineId Id="244" Count="0" />
+      <LineId Id="252" Count="5" />
+      <LineId Id="251" Count="0" />
+      <LineId Id="259" Count="5" />
+      <LineId Id="258" Count="0" />
+      <LineId Id="217" Count="0" />
+      <LineId Id="73" Count="0" />
+      <LineId Id="41" Count="0" />
+      <LineId Id="65" Count="0" />
+      <LineId Id="50" Count="0" />
+      <LineId Id="80" Count="0" />
+      <LineId Id="57" Count="0" />
+      <LineId Id="51" Count="1" />
+      <LineId Id="56" Count="0" />
+      <LineId Id="53" Count="0" />
+      <LineId Id="273" Count="2" />
+      <LineId Id="48" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

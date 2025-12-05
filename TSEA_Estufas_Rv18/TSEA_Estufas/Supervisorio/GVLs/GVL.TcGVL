@@ -1,0 +1,250 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <GVL Name="GVL" Id="{64bd5361-6c27-4db0-83bb-afded3445a11}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	
+////// Layout Interativo ////////
+
+	
+	
+	corPos: DWORD;
+	
+  (*Pos Com Reator 00C000
+	Pos Sem Reator FFFF00
+	Pos Livre FFFFFF*)
+	n: INT;
+	i: INT;
+	
+	cfgPos_OF019: STRING;
+	cfgPos_OF020: STRING;
+	cfgPos_OF021: STRING;
+	cfgPos_LT019: STRING;
+	cfgPos_LT020: STRING;
+	cfgPos_LT021: STRING;
+	cfgPos_Class019: REAL;
+	cfgPos_Class020: REAL;
+	cfgPos_Class021: REAL;
+	cfgPos_Pot019: REAL;
+	cfgPos_Pot020: REAL;
+	cfgPos_Pot021: REAL;
+	cfgPos_Reat019: BOOL;
+	cfgPos_Reat020: BOOL;
+	cfgPos_Reat021: BOOL;
+	cfgPos_FP019: INT;
+	cfgPos_FP020: INT;
+	cfgPos_FP021: INT;
+	cfgPos_Iso019: INT;
+	cfgPos_Iso020: INT;
+	cfgPos_Iso021: INT;
+	
+	
+	
+////// Status Programação ///////////	
+
+	
+	logRegister: ARRAY[0..2] OF STRING;
+	logRegister19: STRING;
+	logRegister20: STRING;
+	logRegister21: STRING;
+	addTextLog: STRING;
+	totalPos: ARRAY[0..2] OF INT;
+	totalSeca: ARRAY[0..2] OF STRING;
+	totalArm: ARRAY[0..2] OF STRING;
+	totalRaet: ARRAY[0..2] OF INT;
+	totalManual: ARRAY[0..2] OF INT;
+	
+	progInicio: ARRAY[0..2] OF STRING; //'DT#2024-3-31-23:59:0'
+	progInicioReat: STRING;
+	ano: STRING;
+	mes: STRING;
+	dia: STRING;
+	hora: STRING;
+	minuto: STRING;
+	
+	horaSecagem: STRING;
+	minSecagem: STRING;
+	horaArmazem: STRING;
+	minArmazem: STRING;
+	
+	
+	
+	endSeca19: TIME;
+	endSeca20: TIME;
+	endSeca21: TIME;
+	
+	endArm19: TIME;
+	endArm20: TIME;
+	endArm21: TIME;
+	
+	
+	
+////// System Time ///////////	
+	
+	fbGetLocalSystemTime: FB_LocalSystemTime;
+	sSystemDateTime: STRING;
+	sSystemTime: STRING;
+	sSystemDate: STRING;
+	sDateTime: STRING;
+	
+	somaTempo: DATE_AND_TIME;
+	
+////// NÃO DEFINIDAS //////	
+	actPos: INT;
+	actEst: INT;
+	actReat: INT;
+	estAtiva: STRING;
+	
+	logButton: bool;
+	
+	bVentOn: BOOL;
+	bAquecOn: BOOL;
+	
+	envialog: string;
+	
+	bstartchart019: BOOL;
+	bstartchart020: BOOL;
+	bstartchart021: BOOL;
+	bAgendaInicio: BOOL;
+	emergency: bool;
+	
+////// DECLARAÇÃO IOs //////
+
+	AnalogIn_4_20 AT %I* : ARRAY[0..9] OF INT;
+	AnalogOut_0_10 AT %Q* : ARRAY[0..9] OF INT;
+	DigitalIn1 AT %I* : ARRAY[1..16] OF BOOL;
+	DigitalIn2 AT %I* : ARRAY[1..16] OF BOOL;
+	DigitalIn3 AT %I* : ARRAY[1..16] OF BOOL;
+	DigitalOut1 AT %Q* : ARRAY[1..16] OF BOOL;
+	DigitalOut2 AT %Q* : ARRAY[1..16] OF BOOL;
+	
+	
+////// VARIAVEIS ESTUFA 019 //////
+
+	zona1atual_019: REAL;
+	zona2atual_019: REAL;
+	zonaSegAtual_019: REAL;
+	
+	
+	sobrecarga_M1_vent_019: BOOL;
+	sobrecarga_M2_vent_019: BOOL;
+	sobrecarga_Purga_019: BOOL;
+	falhaTempHigh_019: BOOL;
+	queimador1_block_019: BOOL;
+	queimador2_block_019: BOOL;
+	ventilacao_Ligada_019: BOOL;
+	aquecimento_Desligado_019: BOOL;
+	aquecimento_Ligado_019: BOOL;
+	fimCicloAquecimento_019: BOOL;
+	purgandoCamara_019: BOOL;
+	liga_ventilacao_019: BOOL;
+	liga_aquecimento_019: BOOL;
+	desl_aquecimento_019: BOOL;
+	emergencia019: BOOL;
+	inEmergencia019: BOOL;
+	
+////// VARIAVEIS ESTUFA 020 //////
+
+	zona1atual_020: REAL;
+	zona2atual_020: REAL;
+	zonaSegAtual_020: REAL;
+	
+	
+	sobrecarga_M1_vent_020: BOOL;
+	sobrecarga_M2_vent_020: BOOL;
+	sobrecarga_Purga_020: BOOL;
+	falhaTempHigh_020: BOOL;
+	queimador1_block_020: BOOL;
+	queimador2_block_020: BOOL;
+	ventilacao_Ligada_020: BOOL;
+	aquecimento_Desligado_020: BOOL;
+	aquecimento_Ligado_020: BOOL;
+	fimCicloAquecimento_020: BOOL;
+	purgandoCamara_020: BOOL;
+	liga_ventilacao_020: BOOL;
+	liga_aquecimento_020: BOOL;
+	desl_aquecimento_020: BOOL;	
+	emergencia020: BOOL;
+	inEmergencia020: BOOL;
+	
+////// VARIAVEIS ESTUFA 021 //////
+
+	zona1atual_021: REAL;
+	zona2atual_021: REAL;
+	zonaSegAtual_021: REAL;
+	
+	
+	sobrecarga_M1_vent_021: BOOL;
+	sobrecarga_M2_vent_021: BOOL;
+	sobrecarga_Purga_021: BOOL;
+	falhaTempHigh_021: BOOL;
+	queimador1_block_021: BOOL;
+	queimador2_block_021: BOOL;
+	ventilacao_Ligada_021: BOOL;
+	aquecimento_Desligado_021: BOOL;
+	aquecimento_Ligado_021: BOOL;
+	fimCicloAquecimento_021: BOOL;
+	purgandoCamara_021: BOOL;
+	liga_ventilacao_021: BOOL;
+	liga_aquecimento_021: BOOL;
+	desl_aquecimento_021: BOOL;	
+	emergencia021: BOOL;
+	inEmergencia021: BOOL;
+	
+////// VARIAVEIS PRODWIN /////
+
+	pwProd_019: BOOL;
+	pwProd_020: BOOL;
+	pwProd_021: BOOL;
+	pwEmerg_019: BOOL;
+	pwEmerg_020: BOOL;
+	pwEmerg_021: BOOL;
+	
+////// VARIAVEI SQL //////
+
+	sCmdInsertLog: STRING(3000);//INSERT INTO [dbo].[LogGeneral] ([HistoricalTime],[Description])VALUES('historicaltime','Description')
+	//SELECT * FROM [dbo].[LogGeneral]
+	sCmdInsertProc: STRING(3000);//INSERT INTO [dbo].[ProcessTable] ([data],[hora],[estufa],[auto],[user],[codPeca],[OF],[lote],[class],[pot],[isola],[fPot],[reator],[TIME],[temp])
+	//VALUES ('data', 'hora', estufa0, 'auto', 'user', 'codpeca', 'OF', 'lote',	class0,	pot0, isola0, Fp0.0, 'reator', 'tempo',	tempe0)
+
+	sCmdSelect19: STRING(3000);//'SELECT [data],[hora],[auto],[pos],[OF],[lote],[class],[pot],[isola],[fPot],[reator],[time],[temp] FROM [dbo].[ProcessTable19] WHERE data=$'2024-10-24$';';
+	sCmdSelect20: STRING(3000);
+	sCmdSelect21: STRING(3000);
+	
+	bInsertLog: BOOL;
+	bInsertProc: BOOL;
+	bSelect19: BOOL;
+	aSelect19: ARRAY[1..MAX_CSV_ROWS] OF selecthist;
+	bSelect20: BOOL;
+	aSelect20: ARRAY[1..MAX_CSV_ROWS] OF selecthist;
+	bSelect21: BOOL;
+	aSelect21: ARRAY[1..MAX_CSV_ROWS] OF selecthist;
+	
+	permanencia: ARRAY[1..3] OF TIME;
+	sReator: STRING;
+	sFp: STRING;
+	sIso: STRING;
+	sAuto: STRING;
+	bHistory: bool;
+	
+////// VARIAVEIS CSV //////
+	
+	report19: BOOL;
+	radioFiltro: INT;
+	radioEstufa: INT;
+	radioData: BOOL;
+	radioOF: BOOL;
+	radioLote: BOOL;
+	arrCVSfilter: ARRAY[0..2] OF st_csv;
+	
+	database: ARRAY[0..MAX_CSV_ROWS, 0..MAX_CSV_COLUMNS] OF STRING(MAX_CSV_FIELD_LENGTH); (*[ (* Source PLC database *)
+	'0_0', '0_1', '0_2', '0_3', '0_4', '0_5',
+	'1', '1_1', '1_2', '1_3', '1_4', '1_5',
+	'2_0', '2_1', '2_2', '2_3', '2_4', '2_5',
+	'3_0', '3_1', '3_2', '3_3', '3_4', '3_5',
+	'4_0', '4_1', '4_2', '4_3', '4_4', '4_5',
+	'5_0', '5_1', '5_2', '5_3', '5_4', '5_5'];*)
+	
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

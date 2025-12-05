@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="st_csv" Id="{639e3da9-11ee-4691-a7b1-93f5cc203242}">
+    <Declaration><![CDATA[TYPE st_csv :
+STRUCT
+	dia: STRING;
+	mes: STRING;
+	ano: STRING;
+	ordem: STRING;
+	lote: string;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

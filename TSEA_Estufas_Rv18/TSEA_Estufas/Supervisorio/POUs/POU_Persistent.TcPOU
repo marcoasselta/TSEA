@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="POU_Persistent" Id="{e48eeb10-ca8b-4438-90d6-90fda42a3969}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM POU_Persistent
+VAR
+	fbWritePersistentData: FB_WritePersistentData;
+	bPersistentWr: BOOL;
+	
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+fbWritePersistentData(
+	NETID:= , 
+	PORT:= 851 , 
+	START:= bPersistentWr, 
+	TMOUT:= , 
+	MODE:= , 
+	BUSY=> , 
+	ERR=> , 
+	ERRID=> );
+	
+bPersistentWr:= FALSE;
+]]></ST>
+    </Implementation>
+    <LineIds Name="POU_Persistent">
+      <LineId Id="9" Count="0" />
+      <LineId Id="11" Count="7" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="19" Count="2" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

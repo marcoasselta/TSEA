@@ -1,0 +1,364 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="Rotina021" Id="{778553db-1f2d-4e70-9704-a4fbd4cacf27}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM Rotina021
+VAR
+	status: INT;
+	
+	posicaoAtual: STRING;
+	envialog: STRING;
+	
+	fbTimeVentila: ton;
+	fbTimeAqueci: ton;
+	
+	a: INT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[fbTimeVentila();
+fbTimeAqueci();
+a:=2;
+
+CASE status OF
+
+0:
+IF gvl_p.arrStatusEstufas[a].start AND STRING_TO_DT(gvl.progInicio[a]) <= systemtime_to_dt(gvl.fbGetLocalSystemTime.systemTime)  THEN
+	status:= 5;
+	
+	gvl.bstartchart021:= TRUE;
+	gvl_p.zona1setpt_021:= gvl_p.arrStatusEstufas[a].tempSeca;
+	gvl_p.zona2setpt_021:= gvl_p.arrStatusEstufas[a].tempSeca;
+	gvl.liga_ventilacao_021:= TRUE;
+	fbTimeVentila(in:= TRUE, pt:=T#1S);
+	
+	gvl_p.etapa_process[a] := 'Inicializando';
+	
+ELSE
+	status:= 0;
+	IF gvl_p.arrStatusEstufas[a].start THEN
+		gvl_p.etapa_process[a] := gvl.progInicio[a];
+	END_IF
+END_IF
+5:
+IF fbTimeVentila.Q THEN
+	status:= 10;
+	gvl.liga_ventilacao_021:=FALSE;
+	fbTimeVentila(in:= FALSE);
+ELSE
+	status:= 5;
+END_IF
+
+10:
+IF gvl.ventilacao_Ligada_021 THEN
+	status:= 15;
+	
+	gvl.liga_aquecimento_021:= TRUE;
+	fbTimeAqueci(in:= TRUE, pt:= T#1S);
+	
+	gvl_p.etapa_process[a] := 'Aquecendo';
+	
+ELSE
+	status:= 10;
+END_IF
+
+15:
+IF fbTimeAqueci.Q THEN
+	status:= 20;
+	
+	gvl.liga_aquecimento_021:= FALSE;
+	fbTimeAqueci(in:=false);
+ELSE
+	status:= 15;
+END_IF
+
+20:
+IF gvl.zona1atual_021 >= gvl_p.zona1setpt_021 THEN
+	status:= 30;
+	
+gvl.progInicio[a]:= DT_TO_STRING(gvl.somaTempo);	
+	
+///// CALCULAR FIM DA SECAGEM E DA ARMAZENAGEM --------------------------------------------------------------------------------
+gvl_p.arrStatusEstufas[a].inicioSecagem := STRING_TO_DT(gvl.progInicio[a]);
+gvl_p.arrStatusEstufas[a].fimSecagem := STRING_TO_DT(gvl.progInicio[a]) + gvl_p.arrStatusEstufas[a].tempoSecagem;
+gvl_P.arrStatusEstufas[a].prevFimSeca := gvl_p.arrStatusEstufas[a].fimSecagem;
+gvl_p.arrStatusEstufas[a].fimArmazenagem := gvl_p.arrStatusEstufas[a].fimSecagem + gvl_p.arrStatusEstufas[a].tempoArmazenagem ;
+
+///// IMPRIMIR A HORA E A DATA DO INICIO DA SECAGEM ---------------------------------------------------------------------------
+gvl_p.arrStatusEstufas[a].statusInicioSecagem := '';
+gvl_p.arrStatusEstufas[a].statusInicioSecagem := concat(gvl_p.arrStatusEstufas[a].statusInicioSecagem,gvl.hora);
+gvl_p.arrStatusEstufas[a].statusInicioSecagem := concat(gvl_p.arrStatusEstufas[a].statusInicioSecagem,':');
+gvl_p.arrStatusEstufas[a].statusInicioSecagem := concat(gvl_p.arrStatusEstufas[a].statusInicioSecagem,gvl.minuto);
+gvl_p.arrStatusEstufas[a].statusInicioSecagem := concat(gvl_p.arrStatusEstufas[a].statusInicioSecagem,' ');
+gvl_p.arrStatusEstufas[a].statusInicioSecagem := concat(gvl_p.arrStatusEstufas[a].statusInicioSecagem,gvl.dia);
+gvl_p.arrStatusEstufas[a].statusInicioSecagem := concat(gvl_p.arrStatusEstufas[a].statusInicioSecagem,'/');
+gvl_p.arrStatusEstufas[a].statusInicioSecagem := concat(gvl_p.arrStatusEstufas[a].statusInicioSecagem,gvl.mes);
+gvl_p.arrStatusEstufas[a].statusInicioSecagem := concat(gvl_p.arrStatusEstufas[a].statusInicioSecagem,'/');
+gvl_p.arrStatusEstufas[a].statusInicioSecagem := concat(gvl_p.arrStatusEstufas[a].statusInicioSecagem,gvl.ano);
+
+//--------------------REATOR------------------------------------
+
+IF gravarConfigPosicao_Reator.bGravarConfigPosicao_Reator THEN
+	gvl_p.arrStatusEstufas[a].inicioReator := '';
+	gvl_p.arrStatusEstufas[a].inicioReator := concat(gvl_p.arrStatusEstufas[a].inicioReator,gvl.hora);
+	gvl_p.arrStatusEstufas[a].inicioReator := concat(gvl_p.arrStatusEstufas[a].inicioReator,':');
+	gvl_p.arrStatusEstufas[a].inicioReator := concat(gvl_p.arrStatusEstufas[a].inicioReator,gvl.minuto);
+	gvl_p.arrStatusEstufas[a].inicioReator := concat(gvl_p.arrStatusEstufas[a].inicioReator,' ');
+	gvl_p.arrStatusEstufas[a].inicioReator := concat(gvl_p.arrStatusEstufas[a].inicioReator,gvl.dia);
+	gvl_p.arrStatusEstufas[a].inicioReator := concat(gvl_p.arrStatusEstufas[a].inicioReator,'/');
+	gvl_p.arrStatusEstufas[a].inicioReator := concat(gvl_p.arrStatusEstufas[a].inicioReator,gvl.mes);
+	gvl_p.arrStatusEstufas[a].inicioReator := concat(gvl_p.arrStatusEstufas[a].inicioReator,'/');
+	gvl_P.arrStatusEstufas[a].inicioReator := concat(gvl_p.arrStatusEstufas[a].inicioReator,gvl.ano);
+END_IF
+
+///// DECOMPOR A VARIAVEL FIM DA SECAGEM -----------------------------------------------------------------------------------------------
+gvl_p.arrStatusEstufas[a].diaSec := MID(STR:= DT_TO_STRING(gvl_p.arrStatusEstufas[a].fimSecagem) , LEN:= 2, POS:=12);
+gvl_p.arrStatusEstufas[a].mesSec := MID(STR:= DT_TO_STRING(gvl_p.arrStatusEstufas[a].fimSecagem), LEN:= 2, POS:=9);
+gvl_p.arrStatusEstufas[a].anoSec := MID(STR:= DT_TO_STRING(gvl_p.arrStatusEstufas[a].fimSecagem), LEN:= 2, POS:=6);
+gvl_p.arrStatusEstufas[a].horaSec := MID(STR:= DT_TO_STRING(gvl_p.arrStatusEstufas[a].fimSecagem), LEN:= 2, POS:=15);
+gvl_p.arrStatusEstufas[a].minutoSec := MID(STR:= DT_TO_STRING(gvl_p.arrStatusEstufas[a].fimSecagem), LEN:= 2, POS:=18);
+
+///// IMPRIMIR A HORA E A DATA DO FIM DA SECAGEM --------------------------------------------------------------------------------------------------------
+gvl_p.arrStatusEstufas[a].statusFimSecagem := '';
+gvl_p.arrStatusEstufas[a].statusFimSecagem := concat(gvl_p.arrStatusEstufas[a].statusFimSecagem,gvl_p.arrStatusEstufas[a].horaSec);
+gvl_p.arrStatusEstufas[a].statusFimSecagem := concat(gvl_p.arrStatusEstufas[a].statusFimSecagem,':');
+gvl_p.arrStatusEstufas[a].statusFimSecagem := concat(gvl_p.arrStatusEstufas[a].statusFimSecagem,gvl_p.arrStatusEstufas[a].minutoSec);
+gvl_p.arrStatusEstufas[a].statusFimSecagem := concat(gvl_p.arrStatusEstufas[a].statusFimSecagem,' ');
+gvl_p.arrStatusEstufas[a].statusFimSecagem := concat(gvl_p.arrStatusEstufas[a].statusFimSecagem,gvl_p.arrStatusEstufas[a].diaSec);
+gvl_p.arrStatusEstufas[a].statusFimSecagem := concat(gvl_p.arrStatusEstufas[a].statusFimSecagem,'/');
+gvl_p.arrStatusEstufas[a].statusFimSecagem := concat(gvl_p.arrStatusEstufas[a].statusFimSecagem,gvl_p.arrStatusEstufas[a].mesSec);
+gvl_p.arrStatusEstufas[a].statusFimSecagem := concat(gvl_p.arrStatusEstufas[a].statusFimSecagem,'/');
+gvl_p.arrStatusEstufas[a].statusFimSecagem := concat(gvl_p.arrStatusEstufas[a].statusFimSecagem,gvl_p.arrStatusEstufas[a].anoSec);
+
+///// DECOMPOR A VARIAVEL FIM DA ARMAZENAGEM -------------------------------------------------------------------------------------------
+gvl_p.arrStatusEstufas[a].diaArm := MID(STR:= DT_TO_STRING(gvl_p.arrStatusEstufas[a].fimArmazenagem) , LEN:= 2, POS:=12);
+gvl_p.arrStatusEstufas[a].mesArm := MID(STR:= DT_TO_STRING(gvl_p.arrStatusEstufas[a].fimArmazenagem), LEN:= 2, POS:=9);
+gvl_p.arrStatusEstufas[a].anoArm := MID(STR:= DT_TO_STRING(gvl_P.arrStatusEstufas[a].fimArmazenagem), LEN:= 2, POS:=6);
+gvl_p.arrStatusEstufas[a].horaArm := MID(STR:= DT_TO_STRING(gvl_P.arrStatusEstufas[a].fimArmazenagem), LEN:= 2, POS:=15);
+gvl_p.arrStatusEstufas[a].minutoArm := MID(STR:= DT_TO_STRING(gvl_p.arrStatusEstufas[a].fimArmazenagem), LEN:= 2, POS:=18);
+
+///// IMPRIMIR A HORA E A DATA DO FIM DA ARMAZENAGEM -----------------------------------------------------------------------------------------------------------
+gvl_p.arrStatusEstufas[a].statusFimArmazenagem := '';
+gvl_p.arrStatusEstufas[a].statusFimArmazenagem := concat(gvl_p.arrStatusEstufas[a].statusFimArmazenagem,gvl_p.arrStatusEstufas[a].horaArm);
+gvl_p.arrStatusEstufas[a].statusFimArmazenagem := concat(gvl_p.arrStatusEstufas[a].statusFimArmazenagem,':');
+gvl_p.arrStatusEstufas[a].statusFimArmazenagem := concat(gvl_p.arrStatusEstufas[a].statusFimArmazenagem,gvl_p.arrStatusEstufas[a].minutoArm);
+gvl_p.arrStatusEstufas[a].statusFimArmazenagem := concat(gvl_p.arrStatusEstufas[a].statusFimArmazenagem,' ');
+gvl_p.arrStatusEstufas[a].statusFimArmazenagem := concat(gvl_p.arrStatusEstufas[a].statusFimArmazenagem,gvl_p.arrStatusEstufas[a].diaArm);
+gvl_p.arrStatusEstufas[a].statusFimArmazenagem := concat(gvl_p.arrStatusEstufas[a].statusFimArmazenagem,'/');
+gvl_p.arrStatusEstufas[a].statusFimArmazenagem := concat(gvl_p.arrStatusEstufas[a].statusFimArmazenagem,gvl_p.arrStatusEstufas[a].mesArm);
+gvl_p.arrStatusEstufas[a].statusFimArmazenagem := concat(gvl_p.arrStatusEstufas[a].statusFimArmazenagem,'/');
+gvl_p.arrStatusEstufas[a].statusFimArmazenagem := concat(gvl_p.arrStatusEstufas[a].statusFimArmazenagem,gvl_p.arrStatusEstufas[a].anoArm);
+
+///// GERADOR DE LOG -------------------------------------------------------------
+envialog:= 'Programação Iniciada ESTUFA 2';
+gvl.logRegister21:= envialog;
+
+gvl_p.etapa_process[a] := 'Secagem';
+
+ELSE
+	status:= 20;
+END_IF
+
+30:
+IF gvl_p.arrStatusEstufas[a].prevFimSeca = systemtime_to_dt(gvl.fbGetLocalSystemTime.systemTime) THEN
+	status:= 40;
+	
+	gvl.zona1atual_021:= gvl_p.arrStatusEstufas[a].tempArm;
+	gvl.zona2atual_021:= gvl_p.arrStatusEstufas[a].tempArm;
+	
+///// GERADOR DE LOG -------------------------------------------------------------
+envialog:= 'Armazenagem Iniciada ESTUFA 2';
+gvl.logRegister21:= envialog;
+	
+gvl_p.etapa_process[a] := 'Armazenagem';
+
+ELSE
+	status:= 30;
+END_IF
+
+40:
+IF gvl_p.arrStatusEstufas[a].fimArmazenagem = systemtime_to_dt(gvl.fbGetLocalSystemTime.systemTime) THEN
+	status:= 50;
+	
+	gvl_p.arrStatusEstufas[a].start:= FALSE;
+	gvl.bstartchart021:= FALSE;
+	gvl.desl_aquecimento_021:= TRUE;
+	fbTimeAqueci(in:=TRUE, pt:=T#1S);
+	
+	gvl_p.etapa_process[a] := '';
+	
+	gvl_p.arrStatusEstufas[a].statusInicioSecagem := '';
+	gvl_p.arrStatusEstufas[a].inicioReator := '';
+	gvl_p.arrStatusEstufas[a].statusFimSecagem := '';
+	gvl_p.arrStatusEstufas[a].statusFimArmazenagem := '';
+	gvl_p.arrStatusEstufas[a].fimSecagem:= DT#1970-1-1-0:0:0;
+	
+	
+///// GERADOR DE LOG -------------------------------------------------------------
+envialog:= 'Programação Finalizada ESTUFA 2';
+gvl.logRegister21:= envialog;
+
+ELSE
+	status:= 40;
+END_IF
+
+45:
+IF gvl_p.arrStatusEstufas[a].start THEN
+status:= 50;
+	
+	gvl_p.arrStatusEstufas[a].start:= FALSE;
+	gvl.bstartchart021:= FALSE;
+	gvl.desl_aquecimento_021:= TRUE;
+	fbTimeAqueci(in:=TRUE, pt:=T#1S);
+	
+	gvl_p.etapa_process[a] := '';
+	
+	gvl_p.arrStatusEstufas[a].statusInicioSecagem := '';
+	gvl_p.arrStatusEstufas[a].inicioReator := '';
+	gvl_p.arrStatusEstufas[a].statusFimSecagem := '';
+	gvl_p.arrStatusEstufas[a].statusFimArmazenagem := '';
+	gvl_p.arrStatusEstufas[a].fimSecagem:= DT#1970-1-1-0:0:0;
+	
+	
+///// GERADOR DE LOG -------------------------------------------------------------
+envialog:= 'Programação Finalizada ESTUFA 2';
+gvl.logRegister21:= envialog;
+ELSE
+	status:= 45;
+END_IF
+
+50:
+IF fbTimeAqueci.Q THEN
+	status:= 0;
+	
+	gvl.desl_aquecimento_021:= FALSE;
+	fbTimeAqueci(in:= FALSE);
+	
+ELSE
+	status:= 50;
+END_IF
+END_CASE
+]]></ST>
+    </Implementation>
+    <LineIds Name="Rotina021">
+      <LineId Id="189" Count="1" />
+      <LineId Id="6" Count="0" />
+      <LineId Id="271" Count="0" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="22" Count="0" />
+      <LineId Id="191" Count="0" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="24" Count="0" />
+      <LineId Id="168" Count="0" />
+      <LineId Id="223" Count="1" />
+      <LineId Id="26" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="255" Count="2" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="31" Count="0" />
+      <LineId Id="166" Count="0" />
+      <LineId Id="171" Count="0" />
+      <LineId Id="173" Count="1" />
+      <LineId Id="169" Count="0" />
+      <LineId Id="172" Count="0" />
+      <LineId Id="170" Count="0" />
+      <LineId Id="175" Count="0" />
+      <LineId Id="28" Count="0" />
+      <LineId Id="27" Count="0" />
+      <LineId Id="29" Count="0" />
+      <LineId Id="32" Count="0" />
+      <LineId Id="36" Count="0" />
+      <LineId Id="180" Count="0" />
+      <LineId Id="37" Count="0" />
+      <LineId Id="225" Count="1" />
+      <LineId Id="33" Count="1" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="178" Count="0" />
+      <LineId Id="38" Count="0" />
+      <LineId Id="179" Count="0" />
+      <LineId Id="181" Count="0" />
+      <LineId Id="186" Count="2" />
+      <LineId Id="183" Count="1" />
+      <LineId Id="182" Count="0" />
+      <LineId Id="185" Count="0" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="39" Count="1" />
+      <LineId Id="44" Count="0" />
+      <LineId Id="284" Count="0" />
+      <LineId Id="46" Count="0" />
+      <LineId Id="285" Count="0" />
+      <LineId Id="47" Count="68" />
+      <LineId Id="117" Count="1" />
+      <LineId Id="121" Count="0" />
+      <LineId Id="45" Count="0" />
+      <LineId Id="227" Count="0" />
+      <LineId Id="125" Count="0" />
+      <LineId Id="228" Count="0" />
+      <LineId Id="42" Count="1" />
+      <LineId Id="41" Count="0" />
+      <LineId Id="127" Count="0" />
+      <LineId Id="126" Count="0" />
+      <LineId Id="128" Count="1" />
+      <LineId Id="131" Count="0" />
+      <LineId Id="134" Count="2" />
+      <LineId Id="138" Count="0" />
+      <LineId Id="140" Count="0" />
+      <LineId Id="137" Count="0" />
+      <LineId Id="142" Count="0" />
+      <LineId Id="229" Count="1" />
+      <LineId Id="132" Count="1" />
+      <LineId Id="130" Count="0" />
+      <LineId Id="144" Count="0" />
+      <LineId Id="143" Count="0" />
+      <LineId Id="145" Count="1" />
+      <LineId Id="148" Count="0" />
+      <LineId Id="192" Count="1" />
+      <LineId Id="197" Count="1" />
+      <LineId Id="194" Count="0" />
+      <LineId Id="232" Count="0" />
+      <LineId Id="231" Count="0" />
+      <LineId Id="235" Count="0" />
+      <LineId Id="240" Count="1" />
+      <LineId Id="243" Count="0" />
+      <LineId Id="245" Count="0" />
+      <LineId Id="250" Count="0" />
+      <LineId Id="236" Count="0" />
+      <LineId Id="152" Count="0" />
+      <LineId Id="154" Count="0" />
+      <LineId Id="151" Count="0" />
+      <LineId Id="156" Count="0" />
+      <LineId Id="149" Count="1" />
+      <LineId Id="147" Count="0" />
+      <LineId Id="208" Count="0" />
+      <LineId Id="207" Count="0" />
+      <LineId Id="219" Count="0" />
+      <LineId Id="210" Count="6" />
+      <LineId Id="233" Count="1" />
+      <LineId Id="237" Count="0" />
+      <LineId Id="239" Count="0" />
+      <LineId Id="242" Count="0" />
+      <LineId Id="244" Count="0" />
+      <LineId Id="246" Count="0" />
+      <LineId Id="251" Count="0" />
+      <LineId Id="238" Count="0" />
+      <LineId Id="217" Count="1" />
+      <LineId Id="209" Count="0" />
+      <LineId Id="195" Count="0" />
+      <LineId Id="220" Count="2" />
+      <LineId Id="157" Count="0" />
+      <LineId Id="196" Count="0" />
+      <LineId Id="199" Count="0" />
+      <LineId Id="201" Count="0" />
+      <LineId Id="204" Count="2" />
+      <LineId Id="202" Count="1" />
+      <LineId Id="200" Count="0" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="21" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="simIniciaProg" Id="{662f6976-2ee6-4828-b8d3-9fbd7250e3cb}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM simIniciaProg
+VAR
+	bSimIniciaProg: BOOL:= FALSE;
+	posicaoAtual: STRING;
+	envialog: STRING;
+	bGravarConfigPosicao_Reator: BOOL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+gvl_p.arrStatusEstufas[gvl.actEst].start := TRUE;
+
+bGravarConfigPosicao_Reator:= TRUE;]]></ST>
+    </Implementation>
+    <LineIds Name="simIniciaProg">
+      <LineId Id="140" Count="1" />
+      <LineId Id="132" Count="0" />
+      <LineId Id="99" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

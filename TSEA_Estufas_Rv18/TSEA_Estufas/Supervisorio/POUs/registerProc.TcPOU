@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="registerProc" Id="{68db1686-c331-4b2f-a58a-08167662059e}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM registerProc
+VAR
+	i: INT;
+	tempo: ton;
+	state: INT;
+	user: string;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[tempo();
+
+CASE state OF
+	
+0:
+IF gvl_p.etapa_process[0] = 'Secagem' OR gvl_p.etapa_process[0] = 'T1' THEN
+	state:=10;
+	tempo(in:=TRUE, pt:=T#30M);
+ELSE
+	state:=0;
+END_IF
+
+10:
+IF tempo.Q THEN
+	state:= 20;
+IF i=1 THEN
+gvl.permanencia[1]:= gvl.permanencia[1]+tempo.PT;
+user:= main.sDB_Operador;
+END_IF
+IF gvl_p.aPositionsE019[i].reator THEN
+	gvl.sReator:= 'SIM';
+	else
+		gvl.sReator:= 'NÃO';
+END_IF
+if gvl_p.aPositionsE019[i].FP = 1 then
+	gvl.sFp:= 'NORMAL';
+	ELSIF gvl_p.aPositionsE019[i].FP = 2 THEN
+		gvl.sFp:= 'REDUZIDO';
+END_IF
+IF gvl_p.aPositionsE019[i].isolamento = 1 THEN
+	gvl.sIso:= '15';
+	ELSIF gvl_p.aPositionsE019[i].isolamento = 2 THEN
+		gvl.sIso:= '24';
+		ELSIF gvl_p.aPositionsE019[i].isolamento = 3 THEN
+			gvl.sIso:= '36';
+END_IF
+IF gvl_p.arrStatusEstufas[0].start THEN
+	gvl.sAuto:= 'Auto';
+	ELSIF gvl_p.arrStatusEstufas[0].startManual THEN
+		gvl.sAuto:= 'Manu';
+END_IF
+
+gvl.sCmdInsertProc:= 'INSERT INTO [dbo].[ProcessTable19] ([data],[hora],[auto],[user],[pos],[OF],[lote],[class],[pot],[isola],[fPot],[reator],[TIME],[temp])
+	VALUES ($'$',$'$',$'$',$'$',$'$',$'$',$'$',,,$'$',$'$',$'$',$'$',)';
+gvl.sCmdInsertProc:= insert(gvl.sCmdInsertProc,REAL_TO_STRING(gvl.zona1atual_019),180);
+gvl.sCmdInsertProc:= insert(gvl.sCmdInsertProc,TIME_TO_STRING(gvl.permanencia[1]),178);
+gvl.sCmdInsertProc:= insert(gvl.sCmdInsertProc,gvl.sReator,175);
+gvl.sCmdInsertProc:= insert(gvl.sCmdInsertProc,gvl.sFp,172);
+gvl.sCmdInsertProc:= insert(gvl.sCmdInsertProc,gvl.sIso,169);
+gvl.sCmdInsertProc:= insert(gvl.sCmdInsertProc,REAL_TO_STRING(gvl_p.aPositionsE019[i].pot),167);
+gvl.sCmdInsertProc:= insert(gvl.sCmdInsertProc,REAL_TO_STRING(gvl_p.aPositionsE019[i].class),166);
+gvl.sCmdInsertProc:= insert(gvl.sCmdInsertProc,gvl_p.aPositionsE019[i].lote,164);
+gvl.sCmdInsertProc:= insert(gvl.sCmdInsertProc,gvl_p.aPositionsE019[i].numOF,161);
+gvl.sCmdInsertProc:= insert(gvl.sCmdInsertProc,INT_TO_STRING(i),158);
+gvl.sCmdInsertProc:= insert(gvl.sCmdInsertProc,user,155);
+gvl.sCmdInsertProc:= insert(gvl.sCmdInsertProc,gvl.sAuto,152);
+gvl.sCmdInsertProc:= insert(gvl.sCmdInsertProc,gvl.sSystemTime,149);
+gvl.sCmdInsertProc:= insert(gvl.sCmdInsertProc,gvl.sSystemDate,146);
+
+gvl.bInsertProc:= TRUE;
+ELSE
+	state:=10;
+END_IF
+
+20:
+IF i<=24 AND NOT main.bBusyInsertProc THEN
+	state:=10;
+	i:=i+1;
+ELSIF i=24 THEN
+	state:=0;
+	i:=1;
+	tempo(in:=FALSE);
+ELSE
+	state:=20;
+END_IF
+
+END_CASE]]></ST>
+    </Implementation>
+    <LineIds Name="registerProc">
+      <LineId Id="27" Count="0" />
+      <LineId Id="95" Count="0" />
+      <LineId Id="84" Count="0" />
+      <LineId Id="96" Count="0" />
+      <LineId Id="99" Count="0" />
+      <LineId Id="101" Count="1" />
+      <LineId Id="106" Count="0" />
+      <LineId Id="104" Count="1" />
+      <LineId Id="100" Count="0" />
+      <LineId Id="108" Count="0" />
+      <LineId Id="107" Count="0" />
+      <LineId Id="110" Count="0" />
+      <LineId Id="158" Count="0" />
+      <LineId Id="169" Count="0" />
+      <LineId Id="111" Count="0" />
+      <LineId Id="178" Count="0" />
+      <LineId Id="170" Count="0" />
+      <LineId Id="115" Count="22" />
+      <LineId Id="261" Count="15" />
+      <LineId Id="154" Count="1" />
+      <LineId Id="251" Count="1" />
+      <LineId Id="109" Count="0" />
+      <LineId Id="160" Count="0" />
+      <LineId Id="103" Count="0" />
+      <LineId Id="161" Count="1" />
+      <LineId Id="166" Count="0" />
+      <LineId Id="172" Count="2" />
+      <LineId Id="176" Count="0" />
+      <LineId Id="164" Count="1" />
+      <LineId Id="163" Count="0" />
+      <LineId Id="180" Count="0" />
+      <LineId Id="97" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

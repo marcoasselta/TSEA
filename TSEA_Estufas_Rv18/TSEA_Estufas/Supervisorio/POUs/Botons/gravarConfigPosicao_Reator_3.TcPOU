@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="gravarConfigPosicao_Reator_3" Id="{e8af35ca-8681-467f-9e46-fbbb2211d957}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM gravarConfigPosicao_Reator_3
+VAR
+	bReator: BOOL;
+	posicaoAtual: STRING;
+	enviaLog: STRING;
+	somaReator: TIME;
+	timeCalc: TIME;
+	
+	dia: STRING;
+	mes: STRING;
+	ano: STRING;
+	hora: STRING;
+	minuto: STRING;
+	
+	bGravarConfigPosicao_Reator: BOOL:= FALSE;
+	
+	bNotificaTime: BOOL;
+	estufaAtual: STRING;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+IF gvl.actEst = 0 THEN
+gvl_p.corPosReator1[gvl.actReat].cor:= 1;
+ELSIF gvl.actEst = 1 THEN
+	gvl_p.corPosReator2[gvl.actReat].cor:= 1;
+	ELSIF gvl.actEst = 2 THEN
+		gvl_p.corPosReator3[gvl.actReat].cor:= 1;
+		END_IF
+	
+
+///// IMPRIMIR A HORA E A DATA DO INICIO DA SECAGEM-------------------------------
+
+IF simIniciaProg.bSimIniciaProg THEN
+gvl.progInicioReat:= DT_TO_STRING(gvl.somaTempo);
+gvl_p.arrStatusEstufas[gvl.actEst].dtInicioReator:= gvl.somaTempo;
+dia:= MID(STR:= gvl.progInicioReat , LEN:= 2, POS:=12);
+mes:= MID(STR:= gvl.progInicioReat , LEN:= 2, POS:=9);
+ano:= MID(STR:= gvl.progInicioReat , LEN:= 2, POS:=6);
+hora:= MID(STR:= gvl.progInicioReat , LEN:= 2, POS:=15);
+minuto:= MID(STR:= gvl.progInicioReat , LEN:= 2, POS:=18);
+
+gvl_p.arrStatusEstufas[gvl.actEst].inicioReator := '';
+gvl_p.arrStatusEstufas[gvl.actEst].inicioReator := concat(gvl_p.arrStatusEstufas[gvl.actEst].inicioReator,hora);
+gvl_p.arrStatusEstufas[gvl.actEst].inicioReator := concat(gvl_p.arrStatusEstufas[gvl.actEst].inicioReator,':');
+gvl_p.arrStatusEstufas[gvl.actEst].inicioReator := concat(gvl_p.arrStatusEstufas[gvl.actEst].inicioReator,minuto);
+gvl_p.arrStatusEstufas[gvl.actEst].inicioReator := concat(gvl_p.arrStatusEstufas[gvl.actEst].inicioReator,' ');
+gvl_p.arrStatusEstufas[gvl.actEst].inicioReator := concat(gvl_p.arrStatusEstufas[gvl.actEst].inicioReator,dia);
+gvl_p.arrStatusEstufas[gvl.actEst].inicioReator := concat(gvl_p.arrStatusEstufas[gvl.actEst].inicioReator,'/');
+gvl_p.arrStatusEstufas[gvl.actEst].inicioReator := concat(gvl_p.arrStatusEstufas[gvl.actEst].inicioReator,mes);
+gvl_p.arrStatusEstufas[gvl.actEst].inicioReator := concat(gvl_p.arrStatusEstufas[gvl.actEst].inicioReator,'/');
+gvl_p.arrStatusEstufas[gvl.actEst].inicioReator := concat(gvl_p.arrStatusEstufas[gvl.actEst].inicioReator,ano);
+
+///// CALCULO DE DEFINIÇÃO SE O PROCESSO PASSA DAS 36 HORAS LIMITES ----------------------------------------
+timeCalc:= (gvl_p.arrStatusEstufas[gvl.actEst].prevFimSeca - systemtime_to_dt(gvl.fbGetLocalSystemTime.systemTime));
+IF timeCalc < T#24H THEN
+	gvl_P.arrStatusEstufas[gvl.actEst].fimSecagem := gvl_p.arrStatusEstufas[gvl.actEst].dtInicioReator + T#24H;
+END_IF
+
+///// DECOMPOR A VARIAVEL FIM DA SECAGEM -----------------------------------------------------------------------------------------------
+gvl_p.arrStatusEstufas[gvl.actEst].diaSec := MID(STR:= DT_TO_STRING(gvl_p.arrStatusEstufas[gvl.actEst].fimSecagem) , LEN:= 2, POS:=12);
+gvl_p.arrStatusEstufas[gvl.actEst].mesSec := MID(STR:= DT_TO_STRING(gvl_p.arrStatusEstufas[gvl.actEst].fimSecagem), LEN:= 2, POS:=9);
+gvl_p.arrStatusEstufas[gvl.actEst].anoSec := MID(STR:= DT_TO_STRING(gvl_p.arrStatusEstufas[gvl.actEst].fimSecagem), LEN:= 2, POS:=6);
+gvl_p.arrStatusEstufas[gvl.actEst].horaSec := MID(STR:= DT_TO_STRING(gvl_p.arrStatusEstufas[gvl.actEst].fimSecagem), LEN:= 2, POS:=15);
+gvl_p.arrStatusEstufas[gvl.actEst].minutoSec := MID(STR:= DT_TO_STRING(gvl_p.arrStatusEstufas[gvl.actEst].fimSecagem), LEN:= 2, POS:=18);
+
+///// IMPRIMIR A HORA E A DATA DO FIM DA SECAGEM --------------------------------------------------------------------------------------------------------
+gvl_p.arrStatusEstufas[gvl.actEst].statusFimSecagem := '';
+gvl_p.arrStatusEstufas[gvl.actEst].statusFimSecagem := concat(gvl_p.arrStatusEstufas[gvl.actEst].statusFimSecagem,gvl_p.arrStatusEstufas[gvl.actEst].horaSec);
+gvl_p.arrStatusEstufas[gvl.actEst].statusFimSecagem := concat(gvl_p.arrStatusEstufas[gvl.actEst].statusFimSecagem,':');
+gvl_p.arrStatusEstufas[gvl.actEst].statusFimSecagem := concat(gvl_p.arrStatusEstufas[gvl.actEst].statusFimSecagem,gvl_p.arrStatusEstufas[gvl.actEst].minutoSec);
+gvl_p.arrStatusEstufas[gvl.actEst].statusFimSecagem := concat(gvl_p.arrStatusEstufas[gvl.actEst].statusFimSecagem,' ');
+gvl_p.arrStatusEstufas[gvl.actEst].statusFimSecagem := concat(gvl_p.arrStatusEstufas[gvl.actEst].statusFimSecagem,gvl_p.arrStatusEstufas[gvl.actEst].diaSec);
+gvl_p.arrStatusEstufas[gvl.actEst].statusFimSecagem := concat(gvl_p.arrStatusEstufas[gvl.actEst].statusFimSecagem,'/');
+gvl_p.arrStatusEstufas[gvl.actEst].statusFimSecagem := concat(gvl_p.arrStatusEstufas[gvl.actEst].statusFimSecagem,gvl_p.arrStatusEstufas[gvl.actEst].mesSec);
+gvl_p.arrStatusEstufas[gvl.actEst].statusFimSecagem := concat(gvl_p.arrStatusEstufas[gvl.actEst].statusFimSecagem,'/');
+gvl_p.arrStatusEstufas[gvl.actEst].statusFimSecagem := concat(gvl_p.arrStatusEstufas[gvl.actEst].statusFimSecagem,gvl_p.arrStatusEstufas[gvl.actEst].anoSec);
+
+///// DECOMPOR A VARIAVEL FIM DA ARMAZENAGEM -------------------------------------------------------------------------------------------
+gvl_p.arrStatusEstufas[gvl.actEst].diaArm := MID(STR:= DT_TO_STRING(gvl_p.arrStatusEstufas[gvl.actEst].fimArmazenagem) , LEN:= 2, POS:=12);
+gvl_p.arrStatusEstufas[gvl.actEst].mesArm := MID(STR:= DT_TO_STRING(gvl_p.arrStatusEstufas[gvl.actEst].fimArmazenagem), LEN:= 2, POS:=9);
+gvl_p.arrStatusEstufas[gvl.actEst].anoArm := MID(STR:= DT_TO_STRING(gvl_p.arrStatusEstufas[gvl.actEst].fimArmazenagem), LEN:= 2, POS:=6);
+gvl_p.arrStatusEstufas[gvl.actEst].horaArm := MID(STR:= DT_TO_STRING(gvl_p.arrStatusEstufas[gvl.actEst].fimArmazenagem), LEN:= 2, POS:=15);
+gvl_p.arrStatusEstufas[gvl.actEst].minutoArm := MID(STR:= DT_TO_STRING(gvl_p.arrStatusEstufas[gvl.actEst].fimArmazenagem), LEN:= 2, POS:=18);
+
+///// IMPRIMIR A HORA E A DATA DO FIM DA ARMAZENAGEM -----------------------------------------------------------------------------------------------------------
+gvl_p.arrStatusEstufas[gvl.actEst].statusFimArmazenagem := '';
+gvl_p.arrStatusEstufas[gvl.actEst].statusFimArmazenagem := concat(gvl_p.arrStatusEstufas[gvl.actEst].statusFimArmazenagem,gvl_p.arrStatusEstufas[gvl.actEst].horaArm);
+gvl_p.arrStatusEstufas[gvl.actEst].statusFimArmazenagem := concat(gvl_p.arrStatusEstufas[gvl.actEst].statusFimArmazenagem,':');
+gvl_p.arrStatusEstufas[gvl.actEst].statusFimArmazenagem := concat(gvl_p.arrStatusEstufas[gvl.actEst].statusFimArmazenagem,gvl_p.arrStatusEstufas[gvl.actEst].minutoArm);
+gvl_p.arrStatusEstufas[gvl.actEst].statusFimArmazenagem := concat(gvl_p.arrStatusEstufas[gvl.actEst].statusFimArmazenagem,' ');
+gvl_p.arrStatusEstufas[gvl.actEst].statusFimArmazenagem := concat(gvl_p.arrStatusEstufas[gvl.actEst].statusFimArmazenagem,gvl_p.arrStatusEstufas[gvl.actEst].diaArm);
+gvl_p.arrStatusEstufas[gvl.actEst].statusFimArmazenagem := concat(gvl_p.arrStatusEstufas[gvl.actEst].statusFimArmazenagem,'/');
+gvl_p.arrStatusEstufas[gvl.actEst].statusFimArmazenagem := concat(gvl_p.arrStatusEstufas[gvl.actEst].statusFimArmazenagem,gvl_p.arrStatusEstufas[gvl.actEst].mesArm);
+gvl_p.arrStatusEstufas[gvl.actEst].statusFimArmazenagem := concat(gvl_P.arrStatusEstufas[gvl.actEst].statusFimArmazenagem,'/');
+gvl_p.arrStatusEstufas[gvl.actEst].statusFimArmazenagem := concat(gvl_P.arrStatusEstufas[gvl.actEst].statusFimArmazenagem,gvl_p.arrStatusEstufas[gvl.actEst].anoArm);
+
+END_IF
+
+///// GERADOR DE LOG -------------------------------------------------------------
+
+posicaoAtual:= INT_TO_STRING(gvl.actReat);
+estufaAtual:= INT_TO_STRING(gvl.actEst);
+envialog:= 'Reator adicionado a posição de Nº ';
+enviaLog:= concat(envialog, posicaoAtual);
+enviaLog:= concat(envialog, '.');
+enviaLog:= concat(envialog, ' ESTUFA ');
+enviaLog:= concat(envialog, estufaAtual);
+gvl.logRegister[gvl.actEst]:= envialog;
+
+bGravarConfigPosicao_Reator:= TRUE;]]></ST>
+    </Implementation>
+    <LineIds Name="gravarConfigPosicao_Reator_3">
+      <LineId Id="72" Count="2" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="295" Count="3" />
+      <LineId Id="294" Count="0" />
+      <LineId Id="53" Count="0" />
+      <LineId Id="89" Count="0" />
+      <LineId Id="131" Count="0" />
+      <LineId Id="125" Count="1" />
+      <LineId Id="211" Count="0" />
+      <LineId Id="127" Count="3" />
+      <LineId Id="124" Count="0" />
+      <LineId Id="123" Count="0" />
+      <LineId Id="90" Count="8" />
+      <LineId Id="48" Count="0" />
+      <LineId Id="242" Count="0" />
+      <LineId Id="246" Count="2" />
+      <LineId Id="251" Count="0" />
+      <LineId Id="208" Count="0" />
+      <LineId Id="137" Count="36" />
+      <LineId Id="135" Count="0" />
+      <LineId Id="174" Count="0" />
+      <LineId Id="132" Count="0" />
+      <LineId Id="117" Count="3" />
+      <LineId Id="270" Count="0" />
+      <LineId Id="121" Count="1" />
+      <LineId Id="272" Count="2" />
+      <LineId Id="115" Count="1" />
+      <LineId Id="114" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

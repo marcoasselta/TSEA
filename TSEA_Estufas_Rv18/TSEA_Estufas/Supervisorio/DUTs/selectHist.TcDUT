@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="selectHist" Id="{86b27480-817a-46a7-9e11-5301a96a5934}">
+    <Declaration><![CDATA[TYPE selectHist :
+STRUCT
+	data: STRING(10);
+	hora: STRING(10);
+	auto: STRING(10);
+	pos:  STRING(10);
+	orfb: STRING(10);
+	lote: STRING(10);
+	class: STRING(50);
+	pot: LREAL(8);
+	isola: LREAL(8);
+	fPot: STRING(10);
+	reator: STRING(10);
+	tempo: STRING(10);
+	temp: DINT;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>
