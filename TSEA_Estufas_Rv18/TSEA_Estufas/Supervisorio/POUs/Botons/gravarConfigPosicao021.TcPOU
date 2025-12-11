@@ -58,14 +58,14 @@ END_FOR
 			gvl.totalArm[2]:= '240';
 			gvl_p.arrStatusEstufas[2].tempArm:= 70;
 END_IF*)
-IF gvl_p.aPositionsE021[gvl.actPos].pot <= 750 AND gvl_p.aPositionsE021[gvl.actPos].class <= 25 AND gvl_p.aPositionsE021[gvl.actPos].FP = 1 THEN
+IF gvl_p.aPositionsE021[gvl.actPos].pot <= 750 AND gvl_p.aPositionsE021[gvl.actPos].isolamento <= 25 AND gvl_p.aPositionsE021[gvl.actPos].FP = 1 THEN
 	GVL_p.arrStatusEstufas[2].tempoSecagem := T#60H;
 	GVL_p.arrStatusEstufas[2].tempoArmazenagem := T#192H;
 	gvl.totalSeca[2]:= '60';
 	gvl_p.arrStatusEstufas[2].tempSeca:= 120;
 	gvl.totalArm[2]:= '192';
 	gvl_p.arrStatusEstufas[2].tempArm:= 70;
-	ELSIF gvl_p.aPositionsE021[gvl.actPos].pot <= 750 AND gvl_p.aPositionsE021[gvl.actPos].class > 25 AND gvl_p.aPositionsE021[gvl.actPos].FP = 1 THEN
+	ELSIF gvl_p.aPositionsE021[gvl.actPos].pot <= 750 AND gvl_p.aPositionsE021[gvl.actPos].isolamento > 25 AND gvl_p.aPositionsE021[gvl.actPos].FP = 1 THEN
 		GVL_p.arrStatusEstufas[2].tempoSecagem:= T#96H;
 		GVL_p.arrStatusEstufas[2].tempoArmazenagem:= T#240H;
 		gvl.totalSeca[2]:= '96';
@@ -79,14 +79,14 @@ IF gvl_p.aPositionsE021[gvl.actPos].pot <= 750 AND gvl_p.aPositionsE021[gvl.actP
 		gvl_p.arrStatusEstufas[2].tempSeca:= 120;
 		gvl.totalArm[2]:= '240';
 		gvl_p.arrStatusEstufas[2].tempArm:= 70;
-	ELSIF gvl_p.aPositionsE021[gvl.actPos].pot <= 750 AND gvl_p.aPositionsE021[gvl.actPos].class <= 25 AND gvl_p.aPositionsE021[gvl.actPos].FP = 2 THEN
+	ELSIF gvl_p.aPositionsE021[gvl.actPos].pot <= 750 AND gvl_p.aPositionsE021[gvl.actPos].isolamento <= 25 AND gvl_p.aPositionsE021[gvl.actPos].FP = 2 THEN
 		GVL_p.arrStatusEstufas[2].tempoSecagem:= T#72H;
 		GVL_p.arrStatusEstufas[2].tempoArmazenagem:= T#240H;
 		gvl.totalSeca[2]:= '72';
 		gvl_p.arrStatusEstufas[2].tempSeca:= 120;
 		gvl.totalArm[2]:= '240';
 		gvl_p.arrStatusEstufas[2].tempArm:= 70;
-	ELSIF gvl_p.aPositionsE021[gvl.actPos].pot <= 750 AND gvl_p.aPositionsE021[gvl.actPos].class > 25 AND gvl_p.aPositionsE021[gvl.actPos].FP = 2 THEN
+	ELSIF gvl_p.aPositionsE021[gvl.actPos].pot <= 750 AND gvl_p.aPositionsE021[gvl.actPos].isolamento > 25 AND gvl_p.aPositionsE021[gvl.actPos].FP = 2 THEN
 		GVL_p.arrStatusEstufas[2].tempoSecagem:= T#96H;
 		GVL_p.arrStatusEstufas[2].tempoArmazenagem:= T#240H;
 		gvl.totalSeca[2]:= '96';

@@ -52,8 +52,8 @@
 				<Target BkhfOrder="01570876">
 					<ManualSelect>{92583661-35AE-45CE-BD4F-C35BFE16F07E}</ManualSelect>
 					<TargetSelect TargetId="2">{FDE02854-39A7-440C-9EAE-C234A16A3CED}</TargetSelect>
-					<TargetSelect TargetId="2">{66689887-CCBD-452C-AC9A-039D997C6E66}</TargetSelect>
 					<TargetSelect TargetId="2">{92583661-35AE-45CE-BD4F-C35BFE16F07E}</TargetSelect>
+					<TargetSelect TargetId="2">{66689887-CCBD-452C-AC9A-039D997C6E66}</TargetSelect>
 					<TargetSelect TargetId="2">{7AFD0713-1333-4A3B-938C-7B9BD0418C8D}</TargetSelect>
 					<LicenseDevice DongleHardwareId="2" DongleDevice="#x03020002" DongleLevel="30" DongleSystemId="{FF0AC761-B499-C961-54A7-6087E9319082}"/>
 				</Target>
@@ -69,7 +69,7 @@
 		</System>
 		<Plc>
 			<Project GUID="{B1CBBE57-1873-465A-A9B3-DD8AB25DE889}" Name="Supervisorio" PrjFilePath="Supervisorio\Supervisorio.plcproj" TmcFilePath="Supervisorio\Supervisorio.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="Supervisorio\Supervisorio.tmc" TmcHash="{5983E3DF-50CF-C227-C3BF-DFED3E94F8BB}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="Supervisorio\Supervisorio.tmc" TmcHash="{4C2B93E2-E4C5-4B1C-75B3-B13381FCB7B1}">
 					<Name>Supervisorio Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="1">

@@ -5,7 +5,7 @@
   <LogPath>\Hard Disk\TwinCAT\Functions\TF6420-Database-Server\Server</LogPath>
   <LogMaxLength>10</LogMaxLength>
   <Impersonate>False</Impersonate>
-  <DBNULLAllowed>False</DBNULLAllowed>
+  <DBNULLAllowed>True</DBNULLAllowed>
   <DBCommandTimeout>30</DBCommandTimeout>
   <DBConnectionTimeout>15</DBConnectionTimeout>
   <MaxByteArrayLength>256</MaxByteArrayLength>

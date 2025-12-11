@@ -349,6 +349,11 @@ A adição de um reator agora irá alterar o término da programação ativa. De
               <l n="LanguageTexts" t="ArrayList" />
             </o>
             <o>
+              <v n="TextID">"388"</v>
+              <v n="TextDefault">"Classe de Tensão:"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
               <v n="TextID">"246"</v>
               <v n="TextDefault">"Classe:"</v>
               <l n="LanguageTexts" t="ArrayList" />
@@ -1016,6 +1021,11 @@ A adição de um reator agora irá alterar o término da programação ativa. De
             <o>
               <v n="TextID">"1025"</v>
               <v n="TextDefault">"Tempo total:"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"1375"</v>
+              <v n="TextDefault">"Tensão Nominal:"</v>
               <l n="LanguageTexts" t="ArrayList" />
             </o>
             <o>

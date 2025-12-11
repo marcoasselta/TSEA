@@ -67,6 +67,7 @@ Id;Default
 113;celsios
 994;Classe
 1173;Classe de Isolamento:
+388;Classe de Tensão:
 246;Classe:
 575;Configuração %s
 330;Configuração Posição
@@ -201,6 +202,7 @@ Id;Default
 12;Tempo Restante
 434;Tempo Restante:
 1025;Tempo total:
+1375;Tensão Nominal:
 534;Test2
 778;Total de posições:
 283;Total de Posições:

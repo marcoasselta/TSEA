@@ -2,7 +2,7 @@
 <Database>
   <ID>1</ID>
   <Name>DB</Name>
-  <ServerName>172.19.0.85\MSSQLTWINCAT</ServerName>
+  <ServerName>172.19.0.85,1433</ServerName>
   <DatabaseName>SUPER_DB</DatabaseName>
   <TableName />
   <Authentication>True</Authentication>

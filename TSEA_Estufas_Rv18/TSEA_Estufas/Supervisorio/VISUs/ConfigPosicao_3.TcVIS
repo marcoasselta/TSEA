@@ -533,7 +533,7 @@
                         </o>
                         <o>
                           <v n="Id">2422045748L</v>
-                          <v n="Value">56</v>
+                          <v n="Value">103</v>
                         </o>
                         <o>
                           <v n="Id">2134141914L</v>
@@ -541,7 +541,7 @@
                         </o>
                         <o>
                           <v n="Id">390574330L</v>
-                          <v n="Value">"Classe:"</v>
+                          <v n="Value">"Tensão Nominal:"</v>
                         </o>
                         <o>
                           <v n="Id">3729828405L</v>
@@ -584,7 +584,7 @@
                         </o>
                         <o>
                           <v n="Id">823443203L</v>
-                          <v n="Value">"246"</v>
+                          <v n="Value">"1375"</v>
                         </o>
                       </l>
                     </o>
