@@ -78,12 +78,15 @@ VAR
 	selo19emrg: BOOL;
 	tOperador: ton;
 	
+	sUserLatched: STRING;
 END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[
 Chart_Gen();
 registradorLog();
+registradorLog20();
+registradorLog21();
 registerProc();
 registerProc20();
 registerProc21();
@@ -100,7 +103,7 @@ P_TextModeWrite();(* This sample program opens and writes CSV file in text mode 
 
 gvl.somaTempo:= SYSTEMTIME_TO_DT(gvl.fbGetLocalSystemTime.systemTime);
 	
-sDB_Operador:= WSTRING_TO_STRING(VisuElems.CurrentFullUserName);
+
 
 // CALCULO DAS TEMPERATURAS 019 ---------------------------------------------------------------------------------------
 gvl.zona1atual_019:= (INT_TO_REAL(gvl.AnalogIn_4_20[0]*200)/32767);
@@ -155,7 +158,7 @@ FOR j:=1 TO 24 BY 1 DO
 END_FOR
 
 
-// VERIFICADO DE PRESENÇA DE REATOR -----------------------------------------------------------------------------------
+// VERIFICADOR DE PRESENÇA DE REATOR -----------------------------------------------------------------------------------
 
 FOR j:=1 TO 24 BY 1 DO
 	IF gvl_p.aPositionsE019[j].reator THEN
@@ -395,7 +398,7 @@ IF gvl.zona1atual_020 > gvl_p.zonaSegSetpt_020 OR gvl.zona2atual_020 > gvl_p.zon
 	gvl.emergency:= TRUE;
 	boot:= TRUE;
 	envialog:= 'Emergência Ativada - Estufa 020';
-	gvl.logRegister19:= envialog;
+	gvl.logRegister20:= envialog;
 END_IF
 
 IF gvl.zona1atual_021 > gvl_p.zonaSegSetpt_021 OR gvl.zona2atual_021 > gvl_p.zonaSegSetpt_021 OR NOT gvl.inEmergencia021 or not boot THEN
@@ -404,7 +407,7 @@ IF gvl.zona1atual_021 > gvl_p.zonaSegSetpt_021 OR gvl.zona2atual_021 > gvl_p.zon
 	gvl.emergency:= TRUE;
 	boot:= TRUE;
 	envialog:= 'Emergência Ativada - Estufa 021';
-	gvl.logRegister19:= envialog;
+	gvl.logRegister21:= envialog;
 END_IF
 
 //Rotina envio sinal de produção ProdWin -------------------------------------------------------------------------
@@ -426,7 +429,7 @@ IF gvl_p.etapa_process[2] = 'Secagem' THEN
 		gvl.pwProd_021:= FALSE;
 END_IF
 
-// SQLite comunication ---------------------------------------------------------------------------------------------
+// SQL communication ---------------------------------------------------------------------------------------------
 
 
 IF bBusyInsertLog THEN
@@ -482,30 +485,26 @@ fbDBRecordArraySelect19(
 	
 // VERIFICADOR DE LOGIN DE USUÁRIO ------------------------------------------------------------------------------------------
 
-CASE user OF
-0:
-IF sDB_Operador <> '' AND sDB_Operador <> ultimoLogin THEN
+sDB_Operador:= WSTRING_TO_STRING(VisuElems.CurrentFullUserName);
+
+IF sDB_Operador <> '' THEN
+    sUserLatched := sDB_Operador;
+END_IF
+
+IF sUserLatched <> '' AND sUserLatched <> ultimoLogin THEN
 	user:=10;
 	ultimoLogin:='';
-	ultimoLogin:= sDB_Operador;
+	ultimoLogin:= sUserLatched;
 	tOperador(in:= TRUE, pt:=T#1S);
 	envialog:= 'Usuário ';
-	envialog:= concat(envialog, sdb_operador);
+	envialog:= concat(envialog, sUserLatched);
 	envialog:= concat(envialog, ' Logado.');
 	gvl.logRegister19:= envialog;
-ELSE
-	user:=0;
+	gvl.logRegister20:= envialog;
+	gvl.logRegister21:= envialog;
+
 END_IF
-10:
-IF (sDB_Operador = '' OR sDB_Operador = 'None') THEN
-	user:=0;
-	tOperador(in:=FALSE);
-	envialog:= 'Usuário deslogado.';
-	gvl.logRegister19:= envialog;
-ELSE
-	user:=10;
-END_IF
-END_CASE
+
 
 // LOGICA HISTORICO ------------------------------------------------------------------------------------------------
 IF gvl.radioFiltro = 0 THEN
@@ -600,7 +599,9 @@ END_IF
     </Implementation>
     <LineIds Name="MAIN">
       <LineId Id="3134" Count="0" />
-      <LineId Id="2203" Count="11" />
+      <LineId Id="2203" Count="1" />
+      <LineId Id="3216" Count="1" />
+      <LineId Id="2205" Count="9" />
       <LineId Id="2886" Count="0" />
       <LineId Id="2216" Count="34" />
       <LineId Id="2963" Count="0" />
@@ -620,14 +621,18 @@ END_IF
       <LineId Id="2968" Count="0" />
       <LineId Id="2515" Count="71" />
       <LineId Id="2588" Count="1" />
+      <LineId Id="3220" Count="0" />
       <LineId Id="2773" Count="0" />
-      <LineId Id="2590" Count="3" />
+      <LineId Id="3222" Count="2" />
+      <LineId Id="3221" Count="0" />
+      <LineId Id="2591" Count="2" />
       <LineId Id="2962" Count="0" />
       <LineId Id="2961" Count="0" />
       <LineId Id="3054" Count="0" />
-      <LineId Id="2594" Count="9" />
-      <LineId Id="3055" Count="0" />
-      <LineId Id="2604" Count="7" />
+      <LineId Id="2594" Count="3" />
+      <LineId Id="3218" Count="1" />
+      <LineId Id="2599" Count="1" />
+      <LineId Id="2609" Count="2" />
       <LineId Id="2750" Count="1" />
       <LineId Id="2753" Count="1" />
       <LineId Id="2752" Count="0" />

@@ -2631,7 +2631,7 @@
                             </o>
                             <o>
                               <v n="Id">72808681L</v>
-                              <v n="Value">"GVL_P.arrLogEstufa19"</v>
+                              <v n="Value">"GVL_P.arrLogEstufa21"</v>
                             </o>
                             <o>
                               <v n="Id">1636817830L</v>
@@ -2639,15 +2639,15 @@
                             </o>
                             <o>
                               <v n="Id">3854506369L</v>
-                              <v n="Value">"GVL_P.arrLogEstufa19[INDEX]"</v>
+                              <v n="Value">"GVL_P.arrLogEstufa21[INDEX]"</v>
                             </o>
                             <o>
                               <v n="Id">2232123230L</v>
-                              <v n="Value">"GVL_P.arrLogEstufa19[INDEX]"</v>
+                              <v n="Value">"GVL_P.arrLogEstufa21[INDEX]"</v>
                             </o>
                             <o>
                               <v n="Id">2685023577L</v>
-                              <v n="Value">"GVL_P.arrLogEstufa19[INDEX]"</v>
+                              <v n="Value">"GVL_P.arrLogEstufa21[INDEX]"</v>
                             </o>
                             <o>
                               <v n="Id">4036189354L</v>
@@ -2685,7 +2685,7 @@
                                   <v>String</v>
                                 </a>
                                 <a n="ColumnNames" cet="String">
-                                  <v>GVL_P.arrLogEstufa19[INDEX]</v>
+                                  <v>GVL_P.arrLogEstufa21[INDEX]</v>
                                 </a>
                                 <v n="BaseType">true</v>
                                 <n n="Bounds" />
@@ -15917,7 +15917,7 @@
                 <v n="VisualElementIdentifier">"GenElemInst_264"</v>
                 <n n="VisualElementOfflinePaintCommands" />
                 <n n="VisualElementFrameInformation" />
-                <d n="VisualElementInputActions" t="Hashtable" ckt="String" cvt="STSnippetInputAction[]">
+                <d n="VisualElementInputActions" t="Hashtable" ckt="String" cvt="IInputAction[]">
                   <v>OnMouseClick</v>
                   <a cet="STSnippetInputAction">
                     <o>
@@ -15940,9 +15940,9 @@ gravarConfigPosicao.bReator[2]:= FALSE;
 ///// GERADOR DE LOG -------------------------------------------------------------
 
 gvl.envialog:= 'Todas as posições foram limpas. ESTUFA 21';
-gvl.logRegister19:= gvl.envialog;
+gvl.logRegister21:= gvl.envialog;
 gvl.sCmdInsertLog:= 'INSERT INTO [dbo].[LogGeneral] ([HistoricalTime],[Description])VALUES($'$',$'$')';
-gvl.sCmdInsertLog:= insert(gvl.sCmdInsertLog,gvl.logRegister19,74);	
+gvl.sCmdInsertLog:= insert(gvl.sCmdInsertLog,gvl.logRegister21,74);	
 gvl.sCmdInsertLog:= insert(gvl.sCmdInsertLog,gvl.sSystemDateTime,71);
 gvl.bInsertLog:= TRUE;"</v>
                     </o>
@@ -16879,7 +16879,6 @@ gvl.bInsertLog:= TRUE;"</v>
         <Type n="String">System.String</Type>
         <Type n="StructuredTypeNode">{503c5b2e-e80e-4ee7-ae00-c5b93a62b1aa}</Type>
         <Type n="STSnippetInputAction">{6302d3fe-6ea5-4c42-819a-a9734a133b3d}</Type>
-        <Type n="STSnippetInputAction[]">_3S.CoDeSys.VisualElem.STSnippetInputAction[], VisualElem.plugin, Version=3.5.13.32, Culture=neutral, PublicKeyToken=null</Type>
         <Type n="TextDocument">{f3878285-8e4f-490b-bb1b-9acbb7eb04db}</Type>
         <Type n="TextLine">{a5de0b0b-1cb5-4913-ac21-9d70293ec00d}</Type>
         <Type n="TypeClass">{16f7aa24-038f-444e-9d81-b001bc091d35}</Type>

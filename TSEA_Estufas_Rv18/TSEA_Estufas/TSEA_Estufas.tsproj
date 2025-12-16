@@ -69,7 +69,7 @@
 		</System>
 		<Plc>
 			<Project GUID="{B1CBBE57-1873-465A-A9B3-DD8AB25DE889}" Name="Supervisorio" PrjFilePath="Supervisorio\Supervisorio.plcproj" TmcFilePath="Supervisorio\Supervisorio.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="Supervisorio\Supervisorio.tmc" TmcHash="{4C2B93E2-E4C5-4B1C-75B3-B13381FCB7B1}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="Supervisorio\Supervisorio.tmc" TmcHash="{87F6D2F5-001F-0547-23AC-AAE586EA2B68}">
 					<Name>Supervisorio Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="1">

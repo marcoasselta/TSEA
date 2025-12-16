@@ -499,7 +499,7 @@
                     <v n="VisualElementIdentifier">"GenElemInst_32"</v>
                     <n n="VisualElementOfflinePaintCommands" />
                     <n n="VisualElementFrameInformation" />
-                    <d n="VisualElementInputActions" t="Hashtable" ckt="String" cvt="InputCloseDialogAction[]">
+                    <d n="VisualElementInputActions" t="Hashtable" ckt="String" cvt="IInputAction[]">
                       <v>OnMouseClick</v>
                       <a cet="InputCloseDialogAction">
                         <o>
@@ -702,7 +702,7 @@ bReator:=false;
 gvl.envialog:= 'Posição Nº ';
 gvl.envialog:= concat(gvl.envialog, INT_TO_STRING(gvl.actPos));
 gvl.envialog:= concat(gvl.envialog,' foi limpa. ESTUFA 020');
-gvl.logRegister19:= gvl.envialog;"</v>
+gvl.logRegister20:= gvl.envialog;"</v>
                         </o>
                       </a>
                     </d>
@@ -3593,7 +3593,6 @@ gvl.logRegister19:= gvl.envialog;"</v>
         <Type n="InputBoxInputAction">{e8e7e747-f76f-4dee-ab1c-b9637e41ac26}</Type>
         <Type n="InputBoxInputAction[]">_3S.CoDeSys.VisualElem.InputBoxInputAction[], VisualElem.plugin, Version=3.5.13.32, Culture=neutral, PublicKeyToken=null</Type>
         <Type n="InputCloseDialogAction">{5d84b30d-2b79-4065-9de4-596597fc09b4}</Type>
-        <Type n="InputCloseDialogAction[]">_3S.CoDeSys.VisualElem.InputCloseDialogAction[], VisualElem.plugin, Version=3.5.13.32, Culture=neutral, PublicKeyToken=null</Type>
         <Type n="Int16">System.Int16</Type>
         <Type n="Int32">System.Int32</Type>
         <Type n="Int64">System.Int64</Type>

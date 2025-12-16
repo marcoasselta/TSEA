@@ -109,10 +109,10 @@ estufaAtual:= INT_TO_STRING(gvl.actEst);
 envialog:= 'Posição Nº ';
 enviaLog:= concat(envialog, posicaoAtual);
 enviaLog:= concat(envialog,' gravada.  ESTUFA 021');
-gvl.logRegister19:= envialog;
+gvl.logRegister21:= envialog;
 
 gvl.sCmdInsertLog:= 'INSERT INTO [dbo].[LogGeneral] ([HistoricalTime],[Description])VALUES($'$',$'$')';
-gvl.sCmdInsertLog:= insert(gvl.sCmdInsertLog,gvl.logRegister19,74);	
+gvl.sCmdInsertLog:= insert(gvl.sCmdInsertLog,gvl.logRegister21,74);	
 gvl.sCmdInsertLog:= insert(gvl.sCmdInsertLog,gvl.sSystemDateTime,71);
 gvl.bInsertLog:= TRUE;]]></ST>
     </Implementation>

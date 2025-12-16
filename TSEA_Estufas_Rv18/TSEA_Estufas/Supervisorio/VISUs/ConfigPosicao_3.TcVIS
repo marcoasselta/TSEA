@@ -1145,7 +1145,7 @@ bReator:=false;
 gvl.envialog:= 'Posição Nº ';
 gvl.envialog:= concat(gvl.envialog, INT_TO_STRING(gvl.actPos));
 gvl.envialog:= concat(gvl.envialog,' foi limpa. ESTUFA 021');
-gvl.logRegister19:= gvl.envialog;"</v>
+gvl.logRegister21:= gvl.envialog;"</v>
                         </o>
                       </a>
                     </d>

@@ -38,7 +38,7 @@ IF gvl_p.arrStatusEstufas[Estufa].startManual AND STRING_TO_DT(gvl.progInicio[Es
 ///// GERADOR DE LOG -------------------------------------------------------------
 
 envialog:= 'Programação Manual Iniciada ESTUFA 021';
-gvl.logRegister19:= envialog;
+gvl.logRegister21:= envialog;
 	
 	gvl_p.etapa_process[Estufa] := 'Inicializando';
 	
@@ -67,7 +67,7 @@ IF gvl.ventilacao_Ligada_021 THEN
 ///// GERADOR DE LOG -------------------------------------------------------------
 
 envialog:= 'Aquecendo ESTUFA 021';
-gvl.logRegister19:= envialog;
+gvl.logRegister21:= envialog;
 
 	gvl_p.etapa_process[Estufa] := 'Aquecendo';
 	
@@ -148,7 +148,7 @@ gvl_p.arrStatusEstufas[Estufa].statusFimSecagem := concat(gvl_p.arrStatusEstufas
 
 ///// GERADOR DE LOG -------------------------------------------------------------
 envialog:= 'Inicio T1 ESTUFA 021';
-gvl.logRegister19:= envialog;
+gvl.logRegister21:= envialog;
 
 gvl_p.etapa_process[2]:= 'T1';
 
@@ -170,7 +170,7 @@ IF STRING_TO_DT(gvl.progInicio[Estufa]) + STRING_TO_TIME(tempo) = systemtime_to_
 	
 ///// GERADOR DE LOG -------------------------------------------------------------
 envialog:= 'Inicio T2 ESTUFA 021';
-gvl.logRegister19:= envialog;
+gvl.logRegister21:= envialog;
 
 gvl_p.etapa_process[2]:= 'T2';
 	
@@ -189,7 +189,7 @@ IF STRING_TO_DT(gvl.progInicio[Estufa]) + STRING_TO_TIME(tempo) = systemtime_to_
 	
 ///// GERADOR DE LOG -------------------------------------------------------------
 envialog:= 'Inicio T3 ESTUFA 021';
-gvl.logRegister19:= envialog;
+gvl.logRegister21:= envialog;
 
 gvl_p.etapa_process[2]:= 'T3';
 	
@@ -211,7 +211,7 @@ IF STRING_TO_DT(gvl.progInicio[Estufa]) + STRING_TO_TIME(tempo) = systemtime_to_
 	
 ///// GERADOR DE LOG -------------------------------------------------------------
 envialog:= 'Inicio T4 ESTUFA 021';
-gvl.logRegister19:= envialog;
+gvl.logRegister21:= envialog;
 
 gvl_p.etapa_process[2]:= 'T4';
 	
@@ -233,7 +233,7 @@ IF STRING_TO_DT(gvl.progInicio[Estufa]) + STRING_TO_TIME(tempo) = systemtime_to_
 	
 ///// GERADOR DE LOG -------------------------------------------------------------
 envialog:= 'Inicio T5 ESTUFA 021';
-gvl.logRegister19:= envialog;
+gvl.logRegister21:= envialog;
 
 gvl_p.etapa_process[2]:= 'T5';
 	
@@ -255,7 +255,7 @@ IF STRING_TO_DT(gvl.progInicio[Estufa]) + STRING_TO_TIME(tempo) = systemtime_to_
 	
 ///// GERADOR DE LOG -------------------------------------------------------------
 envialog:= 'Inicio T6 ESTUFA 021';
-gvl.logRegister19:= envialog;
+gvl.logRegister21:= envialog;
 
 gvl_p.etapa_process[2]:= 'T6';
 	
@@ -277,7 +277,7 @@ IF STRING_TO_DT(gvl.progInicio[Estufa]) + STRING_TO_TIME(tempo) = systemtime_to_
 	
 ///// GERADOR DE LOG -------------------------------------------------------------
 envialog:= 'Inicio T7 ESTUFA 021';
-gvl.logRegister19:= envialog;
+gvl.logRegister21:= envialog;
 
 gvl_p.etapa_process[2]:= 'T7';
 	
@@ -299,7 +299,7 @@ IF STRING_TO_DT(gvl.progInicio[Estufa]) + STRING_TO_TIME(tempo) = systemtime_to_
 	
 ///// GERADOR DE LOG -------------------------------------------------------------
 envialog:= 'Inicio T8 ESTUFA 021';
-gvl.logRegister19:= envialog;
+gvl.logRegister21:= envialog;
 
 gvl_p.etapa_process[2]:= 'T8';
 	
@@ -321,7 +321,7 @@ IF STRING_TO_DT(gvl.progInicio[Estufa]) + STRING_TO_TIME(tempo) = systemtime_to_
 	
 ///// GERADOR DE LOG -------------------------------------------------------------
 envialog:= 'Inicio T9 ESTUFA 021';
-gvl.logRegister19:= envialog;
+gvl.logRegister21:= envialog;
 
 gvl_p.etapa_process[2]:= 'T9';
 	
@@ -343,7 +343,7 @@ IF STRING_TO_DT(gvl.progInicio[Estufa]) + STRING_TO_TIME(tempo) = systemtime_to_
 	
 ///// GERADOR DE LOG -------------------------------------------------------------
 envialog:= 'Inicio T10 ESTUFA 021';
-gvl.logRegister19:= envialog;
+gvl.logRegister21:= envialog;
 
 gvl_p.etapa_process[2]:= 'T10';
 	
@@ -376,7 +376,7 @@ IF STRING_TO_DT(gvl.progInicio[Estufa]) + STRING_TO_TIME(tempo) = systemtime_to_
 	
 ///// GERADOR DE LOG -------------------------------------------------------------
 envialog:= 'Programação Finalizada ESTUFA 021';
-gvl.logRegister19:= envialog;
+gvl.logRegister21:= envialog;
 
 gvl_p.etapa_process[2]:= '';
 
@@ -408,7 +408,7 @@ status:= 50;
 	
 ///// GERADOR DE LOG -------------------------------------------------------------
 envialog:= 'Programação Finalizada ESTUFA 021';
-gvl.logRegister19:= envialog;
+gvl.logRegister21:= envialog;
 
 gvl_p.etapa_process[2]:= '';
 

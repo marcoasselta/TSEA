@@ -141,6 +141,12 @@
     <Compile Include="POUs\registradorLog.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\registradorLog20.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\registradorLog21.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\ReportGenerator.TcPOU">
       <SubType>Code</SubType>
     </Compile>

@@ -912,7 +912,7 @@
           </o>
           <o n="VisuUserManagement" t="VisuUserManagement">
             <v n="GroupIdCounter">4</v>
-            <v n="UserIdCounter">47</v>
+            <v n="UserIdCounter">48</v>
             <v n="ChangeToStartVisuAtLogout">false</v>
             <o n="UserList" t="VisuUserList">
               <l n="UserList" t="ArrayList" cet="VisuUser">
@@ -1384,6 +1384,18 @@
                     <v>Operator</v>
                   </l2>
                 </o>
+                <o>
+                  <v n="Id">47</v>
+                  <v n="Name">"654321"</v>
+                  <v n="FullName">"Admin"</v>
+                  <v n="Password">"06D49632C9DC9BCB62AEAEF99612BA6B"</v>
+                  <v n="Group">""</v>
+                  <v n="IsDeactivated">false</v>
+                  <v n="Description">""</v>
+                  <l2 n="Groups" cet="String">
+                    <v>Admin</v>
+                  </l2>
+                </o>
               </l>
             </o>
             <o n="GroupList" t="VisuGroupList">
@@ -1403,6 +1415,7 @@
                     <v>13</v>
                     <v>10</v>
                     <v>15</v>
+                    <v>47</v>
                   </l>
                 </o>
                 <o>

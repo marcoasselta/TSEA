@@ -521,8 +521,17 @@
                         <o t="STSnippetInputAction">
                           <v n="STSnippet">"///// GERADOR DE LOG -------------------------------------------------------------
 
-gvl.logRegister19:= gvl.addTextLog;
-"</v>
+IF GVL.actEst = 0 THEN
+	gvl.logRegister19:= gvl.addTextLog;
+END_IF
+
+IF GVL.actEst = 1 THEN
+	gvl.logRegister20:= gvl.addTextLog;
+END_IF
+
+IF GVL.actEst = 2 THEN
+	gvl.logRegister21:= gvl.addTextLog;
+END_IF"</v>
                         </o>
                       </a>
                     </d>

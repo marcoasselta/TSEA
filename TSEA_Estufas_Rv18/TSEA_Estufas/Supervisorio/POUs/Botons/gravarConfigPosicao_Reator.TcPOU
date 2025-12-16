@@ -109,7 +109,7 @@ enviaLog:= concat(envialog, posicaoAtual);
 enviaLog:= concat(envialog, '.');
 enviaLog:= concat(envialog, ' ESTUFA ');
 enviaLog:= concat(envialog, estufaAtual);
-gvl.logRegister[gvl.actEst]:= envialog;
+gvl.logRegister19:= envialog;
 
 bGravarConfigPosicao_Reator:= TRUE;]]></ST>
     </Implementation>

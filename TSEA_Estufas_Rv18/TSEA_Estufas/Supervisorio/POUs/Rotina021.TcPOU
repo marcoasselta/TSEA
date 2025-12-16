@@ -35,7 +35,7 @@ IF gvl_p.arrStatusEstufas[a].start AND STRING_TO_DT(gvl.progInicio[a]) <= system
 ///// GERADOR DE LOG -------------------------------------------------------------
 
 envialog:= 'Inicializando Programação ESTUFA 021';
-gvl.logRegister19:= envialog;
+gvl.logRegister21:= envialog;
 
 	gvl_p.etapa_process[a] := 'Inicializando';
 	
@@ -64,7 +64,7 @@ IF gvl.ventilacao_Ligada_021 THEN
 ///// GERADOR DE LOG -------------------------------------------------------------
 
 envialog:= 'Aquecendo ESTUFA 021';
-gvl.logRegister19:= envialog;
+gvl.logRegister21:= envialog;
 
 	gvl_p.etapa_process[a] := 'Aquecendo';
 	
@@ -161,7 +161,7 @@ gvl_p.arrStatusEstufas[a].statusFimArmazenagem := concat(gvl_p.arrStatusEstufas[
 
 ///// GERADOR DE LOG -------------------------------------------------------------
 envialog:= 'Secagem Iniciada ESTUFA 021';
-gvl.logRegister19:= envialog;
+gvl.logRegister21:= envialog;
 
 gvl_p.etapa_process[a] := 'Secagem';
 
@@ -178,7 +178,7 @@ IF gvl_p.arrStatusEstufas[a].prevFimSeca = systemtime_to_dt(gvl.fbGetLocalSystem
 	
 ///// GERADOR DE LOG -------------------------------------------------------------
 envialog:= 'Armazenagem Iniciada ESTUFA 021';
-gvl.logRegister19:= envialog;
+gvl.logRegister21:= envialog;
 
 	
 gvl_p.etapa_process[a] := 'Armazenagem';
@@ -208,7 +208,7 @@ IF gvl_p.arrStatusEstufas[a].fimArmazenagem = systemtime_to_dt(gvl.fbGetLocalSys
 	
 ///// GERADOR DE LOG -------------------------------------------------------------
 envialog:= 'Programação Finalizada ESTUFA 021';
-gvl.logRegister19:= envialog;
+gvl.logRegister21:= envialog;
 
 gvl_p.etapa_process[2]:= '';
 
@@ -237,7 +237,7 @@ status:= 50;
 	
 ///// GERADOR DE LOG -------------------------------------------------------------
 envialog:= 'Programação Finalizada ESTUFA 021';
-gvl.logRegister19:= envialog;
+gvl.logRegister21:= envialog;
 
 gvl_p.etapa_process[2]:= '';
 
